@@ -1,9 +1,10 @@
 name: LowCoreQuests
-main: dev.jalik.lowCoreQuests.LowCoreQuests
-version: 1.0
+main: dev.jalikdev.lowCoreQuests.LowCoreQuests
+version: 1.0-SNAPSHOT
 api-version: 1.21
 depend: [LowCore]
 
 commands:
   quests:
     description: Open quest menu
+    usage: /quests

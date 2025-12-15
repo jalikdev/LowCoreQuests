@@ -1,0 +1,52 @@
+quests:
+  iron_delivery_easy:
+    enabled: true
+    name: "&fDeliver Iron"
+    difficulty: EASY
+    type: ITEM
+    target:
+      material: IRON_INGOT
+      amount: 32
+    rewards:
+      choice: false
+      options:
+        - type: XP
+          amount: 250
+        - type: COMMAND
+          command: "say %player% finished Deliver Iron!"
+
+  nether_biome_medium:
+    enabled: true
+    name: "&cEnter Nether Wastes"
+    difficulty: MEDIUM
+    type: BIOME
+    target:
+      biome: NETHER_WASTES
+      amount: 1
+    rewards:
+      choice: true
+      options:
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 2
+        - type: XP
+          amount: 700
+        - type: COMMAND
+          command: "give %player% minecraft:diamond 1"
+
+  wither_skeleton_hard:
+    enabled: true
+    name: "&5Wither Hunter"
+    difficulty: HARD
+    type: KILL_MOB
+    target:
+      entity: WITHER_SKELETON
+      amount: 20
+    rewards:
+      choice: true
+      options:
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 1
+        - type: XP
+          amount: 2500
