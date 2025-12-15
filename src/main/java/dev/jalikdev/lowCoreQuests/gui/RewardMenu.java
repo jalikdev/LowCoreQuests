@@ -7,7 +7,8 @@ import dev.jalikdev.lowCoreQuests.util.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -17,8 +18,8 @@ public class RewardMenu {
 
     public static final String TITLE = "Select Reward";
 
-    public static final NamespacedKey KEY_REWARD_INDEX = new NamespacedKey(LowCore.getInstance(), "lcq_reward_idx");
-    public static final NamespacedKey KEY_QUEST_ID = new NamespacedKey(LowCore.getInstance(), "lcq_reward_qid");
+    public static final NamespacedKey KEY_REWARD_INDEX = new NamespacedKey("lowcorequests", "lcq_reward_idx");
+    public static final NamespacedKey KEY_QUEST_ID = new NamespacedKey("lowcorequests", "lcq_reward_qid");
 
     public static Inventory build(LowCore core, QuestDefinition def) {
         Inventory inv = Bukkit.createInventory(null, 27, Text.c("&a" + TITLE));
@@ -26,9 +27,10 @@ public class RewardMenu {
         fill(inv);
 
         List<Reward> opts = def.rewards().options();
-        int slot = 10;
+        int count = Math.min(opts.size(), 7);
+        int[] slots = slotsWithGap(count);
 
-        for (int i = 0; i < opts.size() && slot <= 16; i++) {
+        for (int i = 0; i < count; i++) {
             Reward r = opts.get(i);
 
             ItemStack it = icon(r);
@@ -39,16 +41,29 @@ public class RewardMenu {
             meta.getPersistentDataContainer().set(KEY_QUEST_ID, PersistentDataType.STRING, def.id());
             it.setItemMeta(meta);
 
-            inv.setItem(slot++, it);
+            inv.setItem(slots[i], it);
         }
 
         return inv;
+    }
+
+    private static int[] slotsWithGap(int count) {
+        return switch (count) {
+            case 1 -> new int[]{13};
+            case 2 -> new int[]{12, 14};
+            case 3 -> new int[]{11, 13, 15};
+            case 4 -> new int[]{10, 12, 14, 16};
+            case 5 -> new int[]{10, 11, 13, 15, 16};
+            case 6 -> new int[]{10, 11, 12, 14, 15, 16};
+            default -> new int[]{10, 11, 12, 13, 14, 15, 16};
+        };
     }
 
     private static ItemStack icon(Reward r) {
         String d = r.display().toUpperCase();
         if (d.contains("XP")) return new ItemStack(Material.EXPERIENCE_BOTTLE);
         if (d.contains("COMMAND")) return new ItemStack(Material.COMMAND_BLOCK);
+        if (d.contains("X ")) return new ItemStack(Material.CHEST);
         return new ItemStack(Material.CHEST);
     }
 
@@ -57,6 +72,7 @@ public class RewardMenu {
         ItemMeta m = glass.getItemMeta();
         m.setDisplayName(" ");
         glass.setItemMeta(m);
+
         for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, glass);
     }
 }

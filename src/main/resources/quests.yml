@@ -1,52 +1,211 @@
 quests:
-  iron_delivery_easy:
+  coal_runner_easy:
     enabled: true
-    name: "&fDeliver Iron"
+    name: "&fCoal Runner"
+    description:
+      - "&7Bring some coal for torches."
     difficulty: EASY
     type: ITEM
     target:
-      material: IRON_INGOT
-      amount: 32
+      material: COAL
+      display: "&8Coal"
+      amount: 48
     rewards:
-      choice: false
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 200
+        - type: ITEM
+          material: TORCH
+          amount: 64
+
+  log_supply_easy:
+    enabled: true
+    name: "&fLumber Supply"
+    description:
+      - "&7Deliver logs for building."
+    difficulty: EASY
+    type: ITEM
+    target:
+      material: OAK_LOG
+      display: "&6Oak Logs"
+      amount: 64
+    rewards:
+      mode: RANDOM
       options:
         - type: XP
           amount: 250
-        - type: COMMAND
-          command: "say %player% finished Deliver Iron!"
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 16
 
-  nether_biome_medium:
+  farmer_help_easy:
     enabled: true
-    name: "&cEnter Nether Wastes"
+    name: "&fFarmer Help"
+    description:
+      - "&7Bring wheat to the village."
+    difficulty: EASY
+    type: ITEM
+    target:
+      material: WHEAT
+      display: "&eWheat"
+      amount: 48
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 220
+        - type: ITEM
+          material: BREAD
+          amount: 16
+
+  plains_explorer_easy:
+    enabled: true
+    name: "&aPlains Explorer"
+    description:
+      - "&7Enter the Plains biome."
+    difficulty: EASY
+    type: BIOME
+    target:
+      biome: PLAINS
+      display: "&aPlains"
+      amount: 1
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 250
+        - type: ITEM
+          material: LEATHER_BOOTS
+          amount: 1
+
+  cave_cleanup_medium:
+    enabled: true
+    name: "&6Cave Cleanup"
+    description:
+      - "&7Kill some skeletons underground."
+    difficulty: MEDIUM
+    type: KILL_MOB
+    target:
+      entity: SKELETON
+      display: "&fSkeleton"
+      amount: 15
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 800
+        - type: ITEM
+          material: ARROW
+          amount: 64
+
+  spider_hunt_medium:
+    enabled: true
+    name: "&6Spider Hunt"
+    description:
+      - "&7Clear spiders around base."
+    difficulty: MEDIUM
+    type: KILL_MOB
+    target:
+      entity: SPIDER
+      display: "&8Spider"
+      amount: 18
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 900
+        - type: ITEM
+          material: STRING
+          amount: 32
+
+  nether_step_medium:
+    enabled: true
+    name: "&cFirst Steps in the Nether"
+    description:
+      - "&7Enter the Nether Wastes once."
     difficulty: MEDIUM
     type: BIOME
     target:
       biome: NETHER_WASTES
+      display: "&cNether Wastes"
       amount: 1
     rewards:
-      choice: true
+      mode: CHOICE
       options:
-        - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 2
         - type: XP
-          amount: 700
-        - type: COMMAND
-          command: "give %player% minecraft:diamond 1"
+          amount: 1200
+        - type: ITEM
+          material: FIRE_RESISTANCE_POTION
+          amount: 1
 
-  wither_skeleton_hard:
+  blaze_control_hard:
     enabled: true
-    name: "&5Wither Hunter"
+    name: "&4Blaze Control"
+    description:
+      - "&7Take down blazes in a fortress."
+      - "&7Not easy. Bring fire res."
     difficulty: HARD
     type: KILL_MOB
     target:
-      entity: WITHER_SKELETON
-      amount: 20
+      entity: BLAZE
+      display: "&6Blaze"
+      amount: 12
     rewards:
-      choice: true
+      mode: CHOICE
       options:
-        - type: ITEM
-          material: NETHERITE_SCRAP
-          amount: 1
         - type: XP
-          amount: 2500
+          amount: 3500
+        - type: ITEM
+          material: BLAZE_ROD
+          amount: 8
+        - type: ITEM
+          material: GOLDEN_APPLE
+          amount: 3
+
+  ender_pearl_supply_hard:
+    enabled: true
+    name: "&5Ender Supply"
+    description:
+      - "&7Collect pearls for end travel."
+    difficulty: HARD
+    type: ITEM
+    target:
+      material: ENDER_PEARL
+      display: "&5Ender Pearl"
+      amount: 12
+    rewards:
+      mode: CHOICE
+      options:
+        - type: XP
+          amount: 3000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+
+  boss_slayer_hard:
+    enabled: true
+    name: "&5Boss Slayer"
+    description:
+      - "&7Defeat the Warden."
+      - "&7Heavy quest. Prepare well."
+    difficulty: HARD
+    type: KILL_MOB
+    target:
+      entity: WARDEN
+      display: "&5Warden"
+      amount: 1
+    rewards:
+      mode: CHOICE
+      options:
+        - type: XP
+          amount: 8000
+        - type: ITEM
+          material: DIAMOND
+          amount: 20
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 1

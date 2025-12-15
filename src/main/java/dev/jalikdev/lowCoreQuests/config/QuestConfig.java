@@ -2,9 +2,13 @@ package dev.jalikdev.lowCoreQuests.config;
 
 import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.LowCoreQuests;
-import dev.jalikdev.lowCoreQuests.model.*;
+import dev.jalikdev.lowCoreQuests.model.Difficulty;
+import dev.jalikdev.lowCoreQuests.model.QuestDefinition;
+import dev.jalikdev.lowCoreQuests.model.QuestObjective;
+import dev.jalikdev.lowCoreQuests.model.QuestType;
 import dev.jalikdev.lowCoreQuests.reward.Reward;
 import dev.jalikdev.lowCoreQuests.reward.RewardBundle;
+import dev.jalikdev.lowCoreQuests.reward.RewardMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -46,6 +50,7 @@ public class QuestConfig {
                 return;
             }
             Files.copy(in, file.toPath());
+            addon.getLogger().info("Created quests.yml in LowCore folder: " + file.getPath());
         } catch (IOException e) {
             addon.getLogger().severe("Failed to create quests.yml in LowCore folder.");
             e.printStackTrace();
@@ -55,7 +60,9 @@ public class QuestConfig {
     public void reload() {
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(questsFile());
         ConfigurationSection root = cfg.getConfigurationSection("quests");
+
         Map<String, QuestDefinition> map = new LinkedHashMap<>();
+
         if (root != null) {
             for (String id : root.getKeys(false)) {
                 ConfigurationSection q = root.getConfigurationSection(id);
@@ -63,35 +70,58 @@ public class QuestConfig {
 
                 boolean enabled = q.getBoolean("enabled", true);
                 String name = q.getString("name", id);
-                Difficulty difficulty = Difficulty.valueOf(q.getString("difficulty", "EASY").toUpperCase(Locale.ROOT));
-                QuestType type = QuestType.valueOf(q.getString("type", "ITEM").toUpperCase(Locale.ROOT));
+
+                List<String> description = q.getStringList("description");
+
+                Difficulty difficulty;
+                try {
+                    difficulty = Difficulty.valueOf(q.getString("difficulty", "EASY").toUpperCase(Locale.ROOT));
+                } catch (Exception e) {
+                    difficulty = Difficulty.EASY;
+                }
+
+                QuestType type;
+                try {
+                    type = QuestType.valueOf(q.getString("type", "ITEM").toUpperCase(Locale.ROOT));
+                } catch (Exception e) {
+                    continue;
+                }
 
                 ConfigurationSection target = q.getConfigurationSection("target");
                 if (target == null) continue;
 
                 int amount = Math.max(1, target.getInt("amount", 1));
+                String targetDisplay = target.getString("display", null);
 
                 QuestObjective objective;
+
                 if (type == QuestType.ITEM) {
                     Material mat = Material.matchMaterial(target.getString("material", "STONE"));
                     if (mat == null) continue;
-                    objective = QuestObjective.item(mat, amount);
+                    objective = QuestObjective.item(mat, amount, targetDisplay);
                 } else if (type == QuestType.BIOME) {
                     String biome = target.getString("biome", "PLAINS");
                     NamespacedKey key = NamespacedKey.minecraft(biome.toLowerCase(Locale.ROOT));
                     if (Registry.BIOME.get(key) == null) continue;
-                    objective = QuestObjective.biome(key, amount);
+                    objective = QuestObjective.biome(key, amount, targetDisplay);
                 } else if (type == QuestType.KILL_MOB) {
-                    EntityType entity = EntityType.valueOf(target.getString("entity", "ZOMBIE").toUpperCase(Locale.ROOT));
-                    objective = QuestObjective.kill(entity, amount);
+                    EntityType entity;
+                    try {
+                        entity = EntityType.valueOf(target.getString("entity", "ZOMBIE").toUpperCase(Locale.ROOT));
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    objective = QuestObjective.kill(entity, amount, targetDisplay);
                 } else {
                     continue;
                 }
 
                 RewardBundle rewards = parseRewards(q.getConfigurationSection("rewards"));
-                map.put(id, new QuestDefinition(id, enabled, name, difficulty, type, objective, rewards));
+
+                map.put(id, new QuestDefinition(id, enabled, name, description, difficulty, type, objective, rewards));
             }
         }
+
         this.quests = map;
     }
 
@@ -101,14 +131,22 @@ public class QuestConfig {
 
     public Collection<QuestDefinition> enabledQuests() {
         List<QuestDefinition> out = new ArrayList<>();
-        for (QuestDefinition q : quests.values()) if (q.enabled()) out.add(q);
+        for (QuestDefinition q : quests.values()) {
+            if (q.enabled()) out.add(q);
+        }
         return out;
     }
 
     private RewardBundle parseRewards(ConfigurationSection sec) {
-        if (sec == null) return new RewardBundle(false, List.of());
+        if (sec == null) return new RewardBundle(RewardMode.ALL, List.of());
 
-        boolean choice = sec.getBoolean("choice", false);
+        String modeRaw = sec.getString("mode", "ALL").toUpperCase(Locale.ROOT);
+        RewardMode mode;
+        try {
+            mode = RewardMode.valueOf(modeRaw);
+        } catch (Exception e) {
+            mode = RewardMode.ALL;
+        }
 
         List<Map<?, ?>> list = sec.getMapList("options");
         List<Reward> options = new ArrayList<>();
@@ -117,6 +155,6 @@ public class QuestConfig {
             if (r != null) options.add(r);
         }
 
-        return new RewardBundle(choice, options);
+        return new RewardBundle(mode, options);
     }
 }

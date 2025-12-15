@@ -4,8 +4,12 @@ import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.config.QuestConfig;
 import dev.jalikdev.lowCoreQuests.db.QuestRepository;
 import dev.jalikdev.lowCoreQuests.gui.RewardMenu;
-import dev.jalikdev.lowCoreQuests.model.*;
+import dev.jalikdev.lowCoreQuests.model.PlayerQuestState;
+import dev.jalikdev.lowCoreQuests.model.QuestDefinition;
+import dev.jalikdev.lowCoreQuests.model.QuestType;
 import dev.jalikdev.lowCoreQuests.reward.Reward;
+import dev.jalikdev.lowCoreQuests.reward.RewardBundle;
+import dev.jalikdev.lowCoreQuests.reward.RewardMode;
 import dev.jalikdev.lowCoreQuests.util.InventoryUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,6 +24,7 @@ public class QuestService {
     private final QuestRepository repo;
 
     private final Map<UUID, PlayerQuestState> active = new ConcurrentHashMap<>();
+    private final Random random = new Random();
 
     public QuestService(LowCore core, QuestConfig config, QuestRepository repo) {
         this.core = core;
@@ -56,8 +61,21 @@ public class QuestService {
 
         PlayerQuestState st = new PlayerQuestState(uuid, questId, 0);
         active.put(uuid, st);
+
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> repo.upsert(st));
         return true;
+    }
+
+    public QuestDefinition startRandom(Player player) {
+        UUID uuid = player.getUniqueId();
+        if (active.containsKey(uuid)) return null;
+
+        List<QuestDefinition> pool = new ArrayList<>(enabledQuests());
+        if (pool.isEmpty()) return null;
+
+        QuestDefinition chosen = pool.get(random.nextInt(pool.size()));
+        boolean ok = start(player, chosen.id());
+        return ok ? chosen : null;
     }
 
     public boolean cancel(Player player) {
@@ -82,6 +100,7 @@ public class QuestService {
 
         PlayerQuestState updated = new PlayerQuestState(uuid, st.questId(), newProg);
         active.put(uuid, updated);
+
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> repo.upsert(updated));
     }
 
@@ -121,15 +140,29 @@ public class QuestService {
 
         if (st.progress() < def.objective().required()) return;
 
-        if (def.rewards().choice() && def.rewards().options().size() > 1) {
+        RewardBundle bundle = def.rewards();
+        List<Reward> options = bundle.options();
+
+        if (options == null || options.isEmpty()) {
+            finish(player.getUniqueId());
+            player.sendMessage(core.getPrefix() + "Quest completed.");
+            return;
+        }
+
+        if (bundle.mode() == RewardMode.CHOICE && options.size() > 1) {
             player.openInventory(RewardMenu.build(core, def));
             return;
         }
 
-        if (!def.rewards().options().isEmpty()) {
-            def.rewards().options().getFirst().give(player);
+        if (bundle.mode() == RewardMode.RANDOM) {
+            Reward r = options.get(random.nextInt(options.size()));
+            r.give(player);
+            finish(player.getUniqueId());
+            player.sendMessage(core.getPrefix() + "Quest completed. Reward: " + r.display());
+            return;
         }
 
+        for (Reward r : options) r.give(player);
         finish(player.getUniqueId());
         player.sendMessage(core.getPrefix() + "Quest completed.");
     }
@@ -143,9 +176,10 @@ public class QuestService {
 
         if (st.progress() < def.objective().required()) return;
 
-        if (index < 0 || index >= def.rewards().options().size()) return;
+        List<Reward> options = def.rewards().options();
+        if (index < 0 || index >= options.size()) return;
 
-        def.rewards().options().get(index).give(player);
+        options.get(index).give(player);
 
         finish(player.getUniqueId());
         player.sendMessage(core.getPrefix() + "Quest completed.");

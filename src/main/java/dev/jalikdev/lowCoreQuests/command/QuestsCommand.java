@@ -3,7 +3,9 @@ package dev.jalikdev.lowCoreQuests.command;
 import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.gui.QuestMenu;
 import dev.jalikdev.lowCoreQuests.service.QuestService;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

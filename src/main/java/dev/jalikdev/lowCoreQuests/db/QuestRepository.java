@@ -39,6 +39,7 @@ public class QuestRepository {
                 if (!rs.next()) return Optional.empty();
                 return Optional.of(new PlayerQuestState(uuid, rs.getString("quest_id"), rs.getInt("progress")));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,8 +65,10 @@ public class QuestRepository {
     public void delete(UUID uuid) {
         try (PreparedStatement ps = core.getDatabaseManager().getConnection().prepareStatement(
                 "DELETE FROM lowcore_quests_active WHERE uuid=?")) {
+
             ps.setString(1, uuid.toString());
             ps.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

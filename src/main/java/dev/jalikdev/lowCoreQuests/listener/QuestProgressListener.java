@@ -1,6 +1,8 @@
 package dev.jalikdev.lowCoreQuests.listener;
 
-import dev.jalikdev.lowCoreQuests.model.*;
+import dev.jalikdev.lowCoreQuests.model.PlayerQuestState;
+import dev.jalikdev.lowCoreQuests.model.QuestDefinition;
+import dev.jalikdev.lowCoreQuests.model.QuestType;
 import dev.jalikdev.lowCoreQuests.service.QuestService;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;

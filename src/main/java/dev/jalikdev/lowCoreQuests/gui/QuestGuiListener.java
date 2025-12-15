@@ -2,9 +2,11 @@ package dev.jalikdev.lowCoreQuests.gui;
 
 import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.service.QuestService;
+import dev.jalikdev.lowCoreQuests.util.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -35,6 +37,11 @@ public class QuestGuiListener implements Listener {
         ItemMeta meta = e.getCurrentItem().getItemMeta();
         if (meta == null) return;
 
+        if (questMenu && e.getRawSlot() == 49) {
+            player.closeInventory();
+            return;
+        }
+
         if (rewardMenu) {
             Integer idx = meta.getPersistentDataContainer().get(RewardMenu.KEY_REWARD_INDEX, PersistentDataType.INTEGER);
             String qid = meta.getPersistentDataContainer().get(RewardMenu.KEY_QUEST_ID, PersistentDataType.STRING);
@@ -46,13 +53,15 @@ public class QuestGuiListener implements Listener {
         }
 
         String action = meta.getPersistentDataContainer().get(QuestMenu.KEY_ACTION, PersistentDataType.STRING);
-        String questId = meta.getPersistentDataContainer().get(QuestMenu.KEY_QUEST, PersistentDataType.STRING);
         if (action == null) return;
 
-        if (action.equals("start")) {
-            if (questId == null) return;
-            boolean ok = service.start(player, questId);
-            player.sendMessage(core.getPrefix() + (ok ? "Quest started." : "You already have a quest."));
+        if (action.equals("random")) {
+            var def = service.startRandom(player);
+            if (def == null) {
+                player.sendMessage(core.getPrefix() + "You already have a quest.");
+            } else {
+                player.sendMessage(core.getPrefix() + "Random quest started: " + Text.c(def.name()));
+            }
             player.openInventory(QuestMenu.build(core, service, player));
             return;
         }
@@ -77,8 +86,10 @@ public class QuestGuiListener implements Listener {
                 return;
             }
             service.completeOrOpenRewards(player);
+
             String now = ChatColor.stripColor(player.getOpenInventory().getTitle());
             if (now != null && now.equalsIgnoreCase(RewardMenu.TITLE)) return;
+
             player.openInventory(QuestMenu.build(core, service, player));
         }
     }

@@ -8,3 +8,4 @@ commands:
   quests:
     description: Open quest menu
     usage: /quests
+    aliases: [quest]

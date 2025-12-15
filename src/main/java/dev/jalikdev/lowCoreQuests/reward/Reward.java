@@ -13,7 +13,7 @@ public interface Reward {
     String display();
     void give(Player player);
 
-    static Reward fromMap(Map<?, ?> map) {
+    public static Reward fromMap(Map<?, ?> map) {
         Object t = map.get("type");
         if (t == null) return null;
 
@@ -25,21 +25,24 @@ public interface Reward {
         }
 
         if (type.equals("COMMAND")) {
-            Object cmdObj = map.get("command");
-            String cmd = String.valueOf(cmdObj == null ? "" : cmdObj);
+            Object c = map.get("command");
+            String cmd = c == null ? "" : String.valueOf(c);
             return new CommandReward(cmd);
         }
 
         if (type.equals("ITEM")) {
-            Object matObj = map.get("material");
-            Material mat = Material.matchMaterial(String.valueOf(matObj == null ? "STONE" : matObj));
+            Object m = map.get("material");
+            String matName = m == null ? "STONE" : String.valueOf(m);
+            Material mat = Material.matchMaterial(matName);
             if (mat == null) return null;
+
             int amount = Math.max(1, intVal(map.get("amount"), 1));
             return new ItemReward(mat, amount);
         }
 
         return null;
     }
+
 
     private static int intVal(Object o, int def) {
         if (o == null) return def;

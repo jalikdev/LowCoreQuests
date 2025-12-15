@@ -13,17 +13,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class LowCoreQuests extends JavaPlugin {
 
-    private LowCore core;
-
     @Override
     public void onEnable() {
         var plugin = Bukkit.getPluginManager().getPlugin("LowCore");
-        if (!(plugin instanceof LowCore lc)) {
+        if (!(plugin instanceof LowCore core)) {
             getLogger().severe("LowCore not found. Disabling LowCoreQuests.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        this.core = lc;
 
         QuestConfig config = new QuestConfig(this, core);
         config.ensureQuestsFileInLowCoreFolder();
@@ -34,8 +31,7 @@ public class LowCoreQuests extends JavaPlugin {
 
         QuestService service = new QuestService(core, config, repo);
 
-        var cmd = getCommand("quests");
-        if (cmd != null) cmd.setExecutor(new QuestsCommand(core, service));
+        getCommand("quests").setExecutor(new QuestsCommand(core, service));
 
         Bukkit.getPluginManager().registerEvents(new QuestGuiListener(core, service), this);
         Bukkit.getPluginManager().registerEvents(new QuestProgressListener(service), this);
@@ -44,5 +40,7 @@ public class LowCoreQuests extends JavaPlugin {
         for (var p : Bukkit.getOnlinePlayers()) {
             service.load(p.getUniqueId());
         }
+
+        getLogger().info("LowCoreQuests enabled.");
     }
 }
