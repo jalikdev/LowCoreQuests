@@ -10,7 +10,7 @@ public record QuestDefinition(
         String name,
         List<String> description,
         Difficulty difficulty,
-        QuestType type,
-        QuestObjective objective,
+        QuestCompletionMode completionMode,
+        List<QuestObjectiveDefinition> objectives,
         RewardBundle rewards
 ) { }

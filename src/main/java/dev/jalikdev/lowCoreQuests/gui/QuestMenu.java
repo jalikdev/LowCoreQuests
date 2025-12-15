@@ -3,12 +3,14 @@ package dev.jalikdev.lowCoreQuests.gui;
 import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.model.PlayerQuestState;
 import dev.jalikdev.lowCoreQuests.model.QuestDefinition;
+import dev.jalikdev.lowCoreQuests.model.QuestObjectiveDefinition;
 import dev.jalikdev.lowCoreQuests.model.QuestType;
 import dev.jalikdev.lowCoreQuests.service.QuestService;
 import dev.jalikdev.lowCoreQuests.util.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +19,8 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class QuestMenu {
 
@@ -48,50 +52,58 @@ public class QuestMenu {
             return inv;
         }
 
-        inv.setItem(22, activeQuestItem(q, st));
+        inv.setItem(22, activeQuestItem(service, player.getUniqueId(), q, st));
 
         inv.setItem(29, action(Material.BARRIER, "&cCancel", "cancel", null));
         inv.setItem(31, action(Material.LIME_CONCRETE, "&aComplete", "complete", null));
-
-        if (q.type() == QuestType.ITEM) {
-            inv.setItem(33, action(Material.CHEST, "&eTurn in items", "turnin", null));
-        } else {
-            inv.setItem(33, item(Material.GRAY_DYE, "&7Turn in items", List.of("&7Not an ITEM quest")));
-        }
+        inv.setItem(33, action(Material.CHEST, "&eTurn in items", "turnin", null));
 
         return inv;
     }
 
-    private static ItemStack activeQuestItem(QuestDefinition q, PlayerQuestState st) {
+    private static ItemStack activeQuestItem(QuestService service, UUID uuid, QuestDefinition q, PlayerQuestState st) {
         List<String> lore = new ArrayList<>();
 
         lore.add(Text.c("&7Difficulty: &f" + q.difficulty()));
-        lore.add(Text.c("&7Type: &f" + q.type()));
-        lore.add(Text.c("&7Goal: &f" + goalText(q)));
-        lore.add(Text.c("&7Progress: &f" + st.progress() + "/" + q.objective().required()));
-        lore.add(Text.c(st.progress() >= q.objective().required() ? "&aReady" : "&eIn progress"));
+        lore.add(" ");
+
+        Map<Integer, Integer> prog = service.getProgressMap(uuid);
+
+        for (int i = 0; i < q.objectives().size(); i++) {
+            QuestObjectiveDefinition obj = q.objectives().get(i);
+            int cur = prog.getOrDefault(i, 0);
+            lore.add(Text.c("&7- &f" + objectiveLine(obj) + " &7(&f" + cur + "&7/&f" + obj.required() + "&7)"));
+        }
+
+        boolean done = true;
+        for (int i = 0; i < q.objectives().size(); i++) {
+            if (prog.getOrDefault(i, 0) < q.objectives().get(i).required()) {
+                done = false;
+                break;
+            }
+        }
+
+        lore.add(" ");
+        lore.add(Text.c(done ? "&aReady to complete" : "&eIn progress"));
 
         if (q.description() != null && !q.description().isEmpty()) {
             lore.add(" ");
-            for (String line : q.description()) {
-                lore.add(Text.c(line));
-            }
+            for (String line : q.description()) lore.add(Text.c(line));
         }
 
         return item(Material.BOOK, q.name(), lore);
     }
 
-    private static String goalText(QuestDefinition q) {
-        String custom = q.objective().displayName();
-        if (custom != null && !custom.isBlank()) {
-            if (q.type() == QuestType.ITEM) return q.objective().required() + "x " + Text.c(custom);
-            if (q.type() == QuestType.KILL_MOB) return q.objective().required() + "x " + Text.c(custom);
-            if (q.type() == QuestType.BIOME) return "Enter " + Text.c(custom);
+    private static String objectiveLine(QuestObjectiveDefinition obj) {
+        String disp = obj.displayName();
+        if (disp != null && !disp.isBlank()) {
+            if (obj.type() == QuestType.BIOME) return "Enter " + Text.c(disp);
+            return Text.c(disp);
         }
 
-        if (q.type() == QuestType.ITEM) return q.objective().required() + "x " + q.objective().material().name();
-        if (q.type() == QuestType.BIOME) return "Enter " + q.objective().biomeKey().getKey();
-        if (q.type() == QuestType.KILL_MOB) return q.objective().required() + "x " + q.objective().entityType().name();
+        if (obj.type() == QuestType.ITEM) return obj.material().name();
+        if (obj.type() == QuestType.KILL_MOB) return obj.entityType().name();
+        if (obj.type() == QuestType.BIOME) return "Enter " + obj.biomeKey().getKey();
         return "Unknown";
     }
 
@@ -119,7 +131,6 @@ public class QuestMenu {
         ItemMeta m = glass.getItemMeta();
         m.setDisplayName(" ");
         glass.setItemMeta(m);
-
         for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, glass);
     }
 }

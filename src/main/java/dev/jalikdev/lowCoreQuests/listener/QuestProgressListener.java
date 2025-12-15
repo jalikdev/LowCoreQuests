@@ -1,11 +1,6 @@
 package dev.jalikdev.lowCoreQuests.listener;
 
-import dev.jalikdev.lowCoreQuests.model.PlayerQuestState;
-import dev.jalikdev.lowCoreQuests.model.QuestDefinition;
-import dev.jalikdev.lowCoreQuests.model.QuestType;
 import dev.jalikdev.lowCoreQuests.service.QuestService;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,16 +19,7 @@ public class QuestProgressListener implements Listener {
     public void onKill(EntityDeathEvent e) {
         Player killer = e.getEntity().getKiller();
         if (killer == null) return;
-
-        PlayerQuestState st = service.getActive(killer.getUniqueId());
-        if (st == null) return;
-
-        QuestDefinition q = service.getQuest(st.questId());
-        if (q == null || q.type() != QuestType.KILL_MOB) return;
-
-        if (e.getEntityType() == q.objective().entityType()) {
-            service.addProgress(killer, 1);
-        }
+        service.handleKill(killer, e.getEntityType());
     }
 
     @EventHandler
@@ -44,21 +30,6 @@ public class QuestProgressListener implements Listener {
                 && e.getFrom().getBlockY() == e.getTo().getBlockY()
                 && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
 
-        Player player = e.getPlayer();
-
-        PlayerQuestState st = service.getActive(player.getUniqueId());
-        if (st == null) return;
-
-        QuestDefinition q = service.getQuest(st.questId());
-        if (q == null || q.type() != QuestType.BIOME) return;
-
-        NamespacedKey current = Registry.BIOME.getKey(e.getTo().getBlock().getBiome());
-        if (current == null) return;
-
-        if (current.equals(q.objective().biomeKey())) {
-            if (st.progress() < q.objective().required()) {
-                service.addProgress(player, 1);
-            }
-        }
+        service.handleBiome(e.getPlayer(), e.getTo().getBlock().getBiome());
     }
 }

@@ -1,137 +1,192 @@
 quests:
-  coal_runner_easy:
+
+  starter_supply_easy:
     enabled: true
-    name: "&fCoal Runner"
+    name: "&fStarter Supply"
     description:
-      - "&7Bring some coal for torches."
+      - "&7Help the village with basic materials."
     difficulty: EASY
-    type: ITEM
-    target:
-      material: COAL
-      display: "&8Coal"
-      amount: 48
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 200
-        - type: ITEM
-          material: TORCH
+    completion: ALL
+    objectives:
+      - type: ITEM
+        target:
+          material: OAK_LOG
+          display: "&6Oak Logs"
+          amount: 32
+      - type: ITEM
+        target:
+          material: COBBLESTONE
+          display: "&7Cobblestone"
           amount: 64
-
-  log_supply_easy:
-    enabled: true
-    name: "&fLumber Supply"
-    description:
-      - "&7Deliver logs for building."
-    difficulty: EASY
-    type: ITEM
-    target:
-      material: OAK_LOG
-      display: "&6Oak Logs"
-      amount: 64
     rewards:
       mode: RANDOM
       options:
         - type: XP
-          amount: 250
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 16
-
-  farmer_help_easy:
-    enabled: true
-    name: "&fFarmer Help"
-    description:
-      - "&7Bring wheat to the village."
-    difficulty: EASY
-    type: ITEM
-    target:
-      material: WHEAT
-      display: "&eWheat"
-      amount: 48
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 220
+          amount: 300
         - type: ITEM
           material: BREAD
           amount: 16
 
-  plains_explorer_easy:
+  miner_help_easy:
     enabled: true
-    name: "&aPlains Explorer"
+    name: "&fMiner Help"
     description:
-      - "&7Enter the Plains biome."
+      - "&7Collect basic ores."
     difficulty: EASY
-    type: BIOME
-    target:
-      biome: PLAINS
-      display: "&aPlains"
-      amount: 1
+    completion: ALL
+    objectives:
+      - type: ITEM
+        target:
+          material: COAL
+          display: "&8Coal"
+          amount: 48
+      - type: ITEM
+        target:
+          material: IRON_INGOT
+          display: "&fIron Ingot"
+          amount: 16
     rewards:
       mode: RANDOM
       options:
         - type: XP
-          amount: 250
+          amount: 400
         - type: ITEM
-          material: LEATHER_BOOTS
-          amount: 1
+          material: TORCH
+          amount: 64
+
+  peaceful_hunter_easy:
+    enabled: true
+    name: "&aPeaceful Hunter"
+    description:
+      - "&7Hunt passive mobs for food."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: COW
+          display: "&fCow"
+          amount: 8
+      - type: KILL_MOB
+        target:
+          entity: PIG
+          display: "&dPig"
+          amount: 6
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 350
+        - type: ITEM
+          material: COOKED_BEEF
+          amount: 16
 
   cave_cleanup_medium:
     enabled: true
     name: "&6Cave Cleanup"
     description:
-      - "&7Kill some skeletons underground."
+      - "&7Clear hostile mobs underground."
     difficulty: MEDIUM
-    type: KILL_MOB
-    target:
-      entity: SKELETON
-      display: "&fSkeleton"
-      amount: 15
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 800
-        - type: ITEM
-          material: ARROW
-          amount: 64
-
-  spider_hunt_medium:
-    enabled: true
-    name: "&6Spider Hunt"
-    description:
-      - "&7Clear spiders around base."
-    difficulty: MEDIUM
-    type: KILL_MOB
-    target:
-      entity: SPIDER
-      display: "&8Spider"
-      amount: 18
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: ZOMBIE
+          display: "&2Zombie"
+          amount: 12
+      - type: KILL_MOB
+        target:
+          entity: SKELETON
+          display: "&fSkeleton"
+          amount: 10
     rewards:
       mode: RANDOM
       options:
         - type: XP
           amount: 900
         - type: ITEM
-          material: STRING
-          amount: 32
+          material: ARROW
+          amount: 64
 
-  nether_step_medium:
+  iron_age_medium:
     enabled: true
-    name: "&cFirst Steps in the Nether"
+    name: "&7Iron Age"
     description:
-      - "&7Enter the Nether Wastes once."
+      - "&7Prepare iron equipment."
     difficulty: MEDIUM
-    type: BIOME
-    target:
-      biome: NETHER_WASTES
-      display: "&cNether Wastes"
-      amount: 1
+    completion: ALL
+    objectives:
+      - type: ITEM
+        target:
+          material: IRON_INGOT
+          display: "&fIron Ingot"
+          amount: 32
+      - type: ITEM
+        target:
+          material: LEATHER
+          display: "&6Leather"
+          amount: 12
     rewards:
-      mode: CHOICE
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 800
+        - type: ITEM
+          material: IRON_PICKAXE
+          amount: 1
+
+  biome_explorer_medium:
+    enabled: true
+    name: "&aBiome Explorer"
+    description:
+      - "&7Travel across different biomes."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: BIOME
+        target:
+          biome: PLAINS
+          display: "&aPlains"
+          amount: 1
+      - type: BIOME
+        target:
+          biome: FOREST
+          display: "&2Forest"
+          amount: 1
+      - type: BIOME
+        target:
+          biome: DESERT
+          display: "&eDesert"
+          amount: 1
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 1000
+        - type: ITEM
+          material: MAP
+          amount: 1
+
+  nether_prep_medium:
+    enabled: true
+    name: "&cNether Preparation"
+    description:
+      - "&7Get ready for Nether travel."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: ITEM
+        target:
+          material: OBSIDIAN
+          display: "&5Obsidian"
+          amount: 10
+      - type: ITEM
+        target:
+          material: FLINT_AND_STEEL
+          display: "&7Flint and Steel"
+          amount: 1
+    rewards:
+      mode: RANDOM
       options:
         - type: XP
           amount: 1200
@@ -139,73 +194,191 @@ quests:
           material: FIRE_RESISTANCE_POTION
           amount: 1
 
-  blaze_control_hard:
+  nether_scout_hard:
     enabled: true
-    name: "&4Blaze Control"
+    name: "&cNether Scout"
     description:
-      - "&7Take down blazes in a fortress."
-      - "&7Not easy. Bring fire res."
+      - "&7Explore the Nether carefully."
     difficulty: HARD
-    type: KILL_MOB
-    target:
-      entity: BLAZE
-      display: "&6Blaze"
-      amount: 12
+    completion: ALL
+    objectives:
+      - type: BIOME
+        target:
+          biome: NETHER_WASTES
+          display: "&cNether Wastes"
+          amount: 1
+      - type: KILL_MOB
+        target:
+          entity: ZOMBIFIED_PIGLIN
+          display: "&dZombified Piglin"
+          amount: 10
     rewards:
       mode: CHOICE
       options:
         - type: XP
-          amount: 3500
+          amount: 2500
         - type: ITEM
-          material: BLAZE_ROD
-          amount: 8
-        - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 3
+          material: GOLD_INGOT
+          amount: 12
 
-  ender_pearl_supply_hard:
+  blaze_control_hard:
     enabled: true
-    name: "&5Ender Supply"
+    name: "&6Blaze Control"
     description:
-      - "&7Collect pearls for end travel."
+      - "&7Fight Blazes in the fortress."
     difficulty: HARD
-    type: ITEM
-    target:
-      material: ENDER_PEARL
-      display: "&5Ender Pearl"
-      amount: 12
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: BLAZE
+          display: "&6Blaze"
+          amount: 10
+      - type: ITEM
+        target:
+          material: BLAZE_ROD
+          display: "&6Blaze Rod"
+          amount: 6
     rewards:
       mode: CHOICE
       options:
         - type: XP
           amount: 3000
         - type: ITEM
-          material: EXPERIENCE_BOTTLE
-          amount: 32
-        - type: ITEM
-          material: ENCHANTED_GOLDEN_APPLE
-          amount: 1
+          material: GOLDEN_APPLE
+          amount: 3
 
-  boss_slayer_hard:
+  ender_supplies_hard:
     enabled: true
-    name: "&5Boss Slayer"
+    name: "&5Ender Supplies"
     description:
-      - "&7Defeat the Warden."
-      - "&7Heavy quest. Prepare well."
+      - "&7Gather Ender materials."
     difficulty: HARD
-    type: KILL_MOB
-    target:
-      entity: WARDEN
-      display: "&5Warden"
-      amount: 1
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: ENDERMAN
+          display: "&5Enderman"
+          amount: 12
+      - type: ITEM
+        target:
+          material: ENDER_PEARL
+          display: "&5Ender Pearl"
+          amount: 6
     rewards:
       mode: CHOICE
       options:
         - type: XP
-          amount: 8000
+          amount: 2800
         - type: ITEM
-          material: DIAMOND
-          amount: 20
-        - type: ITEM
-          material: NETHERITE_INGOT
+          material: EXPERIENCE_BOTTLE
+          amount: 32
+
+  ocean_cleanup_medium:
+    enabled: true
+    name: "&bOcean Cleanup"
+    description:
+      - "&7Clear threats in the ocean."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: DROWNED
+          display: "&3Drowned"
+          amount: 10
+      - type: BIOME
+        target:
+          biome: OCEAN
+          display: "&bOcean"
           amount: 1
+    rewards:
+      mode: RANDOM
+      options:
+        - type: XP
+          amount: 1100
+        - type: ITEM
+          material: TRIDENT
+          amount: 1
+
+  deep_dark_risk_hard:
+    enabled: true
+    name: "&5Deep Dark Risk"
+    description:
+      - "&7Explore the Deep Dark carefully."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: BIOME
+        target:
+          biome: DEEP_DARK
+          display: "&8Deep Dark"
+          amount: 1
+      - type: ITEM
+        target:
+          material: SCULK
+          display: "&8Sculk"
+          amount: 16
+    rewards:
+      mode: CHOICE
+      options:
+        - type: XP
+          amount: 3500
+        - type: ITEM
+          material: AMETHYST_SHARD
+          amount: 16
+
+  advanced_mining_hard:
+    enabled: true
+    name: "&7Advanced Mining"
+    description:
+      - "&7Mine valuable resources."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: ITEM
+        target:
+          material: DIAMOND
+          display: "&bDiamond"
+          amount: 6
+      - type: ITEM
+        target:
+          material: REDSTONE
+          display: "&cRedstone"
+          amount: 32
+    rewards:
+      mode: CHOICE
+      options:
+        - type: XP
+          amount: 3000
+        - type: ITEM
+          material: DIAMOND_PICKAXE
+          amount: 1
+
+  guardian_threat_hard:
+    enabled: true
+    name: "&3Guardian Threat"
+    description:
+      - "&7Deal with ocean guardians."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: GUARDIAN
+          display: "&3Guardian"
+          amount: 8
+      - type: ITEM
+        target:
+          material: PRISMARINE_SHARD
+          display: "&3Prismarine Shard"
+          amount: 16
+    rewards:
+      mode: CHOICE
+      options:
+        - type: XP
+          amount: 4000
+        - type: ITEM
+          material: SEA_LANTERN
+          amount: 4
