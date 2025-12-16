@@ -1,0 +1,217 @@
+quests:
+
+  demo_collect_only:
+    enabled: true
+    name: "&a[Demo] Collect Only"
+    description:
+      - "&7Shows COLLECT objective."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: OAK_LOG
+          display: "&6Oak Logs"
+          amount: 16
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 200
+
+  demo_deliver_only:
+    enabled: true
+    name: "&e[Demo] Deliver Only"
+    description:
+      - "&7Shows DELIVER objective."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: COBBLESTONE
+          display: "&7Cobblestone"
+          amount: 32
+    rewards:
+      mode: ALL
+      options:
+        - type: ITEM
+          material: TORCH
+          amount: 16
+
+  demo_kill_only:
+    enabled: true
+    name: "&c[Demo] Kill Only"
+    description:
+      - "&7Shows KILL_MOB objective."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: ZOMBIE
+          display: "&2Zombie"
+          amount: 10
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 600
+
+  demo_biome_only:
+    enabled: true
+    name: "&b[Demo] Biome Only"
+    description:
+      - "&7Shows BIOME objective."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: BIOME
+        target:
+          biome: FOREST
+          display: "&2Forest"
+          amount: 1
+    rewards:
+      mode: ALL
+      options:
+        - type: ITEM
+          material: MAP
+          amount: 1
+
+  demo_multi_objective:
+    enabled: true
+    name: "&6[Demo] Multi Objective"
+    description:
+      - "&7Collect, Kill and Deliver."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: IRON_INGOT
+          display: "&fIron Ingot"
+          amount: 12
+      - type: KILL_MOB
+        target:
+          entity: SKELETON
+          display: "&fSkeleton"
+          amount: 6
+      - type: DELIVER
+        target:
+          material: BONE
+          display: "&fBone"
+          amount: 10
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 1200
+
+  demo_choice_single_rewards:
+    enabled: true
+    name: "&d[Demo] Choice (Single)"
+    description:
+      - "&7Choose one simple reward."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: COAL
+          display: "&8Coal"
+          amount: 32
+    rewards:
+      mode: CHOICE
+      options:
+        - type: XP
+          amount: 500
+        - type: ITEM
+          material: IRON_INGOT
+          amount: 8
+
+  demo_choice_bundle_rewards:
+    enabled: true
+    name: "&5[Demo] Choice (Bundles)"
+    description:
+      - "&7Choose between reward bundles."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: BLAZE
+          display: "&6Blaze"
+          amount: 6
+    rewards:
+      mode: CHOICE
+      options:
+        - type: BUNDLE
+          name: "&aXP + Iron"
+          rewards:
+            - type: XP
+              amount: 1200
+            - type: ITEM
+              material: IRON_INGOT
+              amount: 12
+
+        - type: BUNDLE
+          name: "&bXP + Gold"
+          rewards:
+            - type: XP
+              amount: 800
+            - type: ITEM
+              material: GOLD_INGOT
+              amount: 6
+
+  demo_random_bundle:
+    enabled: true
+    name: "&6[Demo] Random Bundle"
+    description:
+      - "&7Random bundle reward."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: REDSTONE
+          display: "&cRedstone"
+          amount: 32
+    rewards:
+      mode: RANDOM
+      options:
+        - type: BUNDLE
+          name: "&eMiner Pack"
+          rewards:
+            - type: XP
+              amount: 1000
+            - type: ITEM
+              material: IRON_PICKAXE
+              amount: 1
+
+        - type: BUNDLE
+          name: "&dExplorer Pack"
+          rewards:
+            - type: XP
+              amount: 800
+            - type: ITEM
+              material: MAP
+              amount: 1
+
+  demo_command_reward:
+    enabled: true
+    name: "&4[Demo] Command Reward"
+    description:
+      - "&7Shows COMMAND reward."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: CREEPER
+          display: "&aCreeper"
+          amount: 3
+    rewards:
+      mode: ALL
+      options:
+        - type: COMMAND
+          command: "say %player% completed a demo quest!"

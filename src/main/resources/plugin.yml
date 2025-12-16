@@ -1,6 +1,6 @@
 name: LowCoreQuests
 main: dev.jalikdev.lowCoreQuests.LowCoreQuests
-version: 1.0
+version: 2.0
 api-version: 1.21
 depend: [LowCore]
 

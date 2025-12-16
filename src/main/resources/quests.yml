@@ -1,313 +1,1016 @@
 quests:
 
-  starter_supply_easy:
+  late_easy_01_deepslate_1000:
     enabled: true
-    name: "&fStarter Supply"
+    name: "&7[Late] Deepstone Warmup"
     description:
-      - "&7Help the village with basic materials."
+      - "&7Late-game mining warmup."
     difficulty: EASY
     completion: ALL
     objectives:
-      - type: ITEM
+      - type: COLLECT
         target:
-          material: OAK_LOG
-          display: "&6Oak Logs"
-          amount: 32
-      - type: ITEM
-        target:
-          material: COBBLESTONE
-          display: "&7Cobblestone"
-          amount: 64
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 300
-        - type: ITEM
-          material: BREAD
-          amount: 16
-
-  miner_help_easy:
-    enabled: true
-    name: "&fMiner Help"
-    description:
-      - "&7Collect basic ores."
-    difficulty: EASY
-    completion: ALL
-    objectives:
-      - type: ITEM
-        target:
-          material: COAL
-          display: "&8Coal"
-          amount: 48
-      - type: ITEM
-        target:
-          material: IRON_INGOT
-          display: "&fIron Ingot"
-          amount: 16
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 400
-        - type: ITEM
-          material: TORCH
-          amount: 64
-
-  peaceful_hunter_easy:
-    enabled: true
-    name: "&aPeaceful Hunter"
-    description:
-      - "&7Hunt passive mobs for food."
-    difficulty: EASY
-    completion: ALL
-    objectives:
-      - type: KILL_MOB
-        target:
-          entity: COW
-          display: "&fCow"
-          amount: 8
-      - type: KILL_MOB
-        target:
-          entity: PIG
-          display: "&dPig"
-          amount: 6
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 350
-        - type: ITEM
-          material: COOKED_BEEF
-          amount: 16
-
-  cave_cleanup_medium:
-    enabled: true
-    name: "&6Cave Cleanup"
-    description:
-      - "&7Clear hostile mobs underground."
-    difficulty: MEDIUM
-    completion: ALL
-    objectives:
-      - type: KILL_MOB
-        target:
-          entity: ZOMBIE
-          display: "&2Zombie"
-          amount: 12
-      - type: KILL_MOB
-        target:
-          entity: SKELETON
-          display: "&fSkeleton"
-          amount: 10
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 900
-        - type: ITEM
-          material: ARROW
-          amount: 64
-
-  iron_age_medium:
-    enabled: true
-    name: "&7Iron Age"
-    description:
-      - "&7Prepare iron equipment."
-    difficulty: MEDIUM
-    completion: ALL
-    objectives:
-      - type: ITEM
-        target:
-          material: IRON_INGOT
-          display: "&fIron Ingot"
-          amount: 32
-      - type: ITEM
-        target:
-          material: LEATHER
-          display: "&6Leather"
-          amount: 12
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
-          amount: 800
-        - type: ITEM
-          material: IRON_PICKAXE
-          amount: 1
-
-  biome_explorer_medium:
-    enabled: true
-    name: "&aBiome Explorer"
-    description:
-      - "&7Travel across different biomes."
-    difficulty: MEDIUM
-    completion: ALL
-    objectives:
-      - type: BIOME
-        target:
-          biome: PLAINS
-          display: "&aPlains"
-          amount: 1
-      - type: BIOME
-        target:
-          biome: FOREST
-          display: "&2Forest"
-          amount: 1
-      - type: BIOME
-        target:
-          biome: DESERT
-          display: "&eDesert"
-          amount: 1
-    rewards:
-      mode: RANDOM
-      options:
-        - type: XP
+          material: DEEPSLATE
+          display: "&8Deepslate"
           amount: 1000
-        - type: ITEM
-          material: MAP
-          amount: 1
-
-  nether_prep_medium:
-    enabled: true
-    name: "&cNether Preparation"
-    description:
-      - "&7Get ready for Nether travel."
-    difficulty: MEDIUM
-    completion: ALL
-    objectives:
-      - type: ITEM
-        target:
-          material: OBSIDIAN
-          display: "&5Obsidian"
-          amount: 10
-      - type: ITEM
-        target:
-          material: FLINT_AND_STEEL
-          display: "&7Flint and Steel"
-          amount: 1
     rewards:
-      mode: RANDOM
+      mode: ALL
       options:
         - type: XP
-          amount: 1200
+          amount: 12000
         - type: ITEM
-          material: FIRE_RESISTANCE_POTION
-          amount: 1
-
-  nether_scout_hard:
-    enabled: true
-    name: "&cNether Scout"
-    description:
-      - "&7Explore the Nether carefully."
-    difficulty: HARD
-    completion: ALL
-    objectives:
-      - type: BIOME
-        target:
-          biome: NETHER_WASTES
-          display: "&cNether Wastes"
-          amount: 1
-      - type: KILL_MOB
-        target:
-          entity: ZOMBIFIED_PIGLIN
-          display: "&dZombified Piglin"
-          amount: 10
-    rewards:
-      mode: CHOICE
-      options:
-        - type: XP
-          amount: 2500
-        - type: ITEM
-          material: GOLD_INGOT
-          amount: 12
-
-  blaze_control_hard:
-    enabled: true
-    name: "&6Blaze Control"
-    description:
-      - "&7Fight Blazes in the fortress."
-    difficulty: HARD
-    completion: ALL
-    objectives:
-      - type: KILL_MOB
-        target:
-          entity: BLAZE
-          display: "&6Blaze"
-          amount: 10
-      - type: ITEM
-        target:
-          material: BLAZE_ROD
-          display: "&6Blaze Rod"
+          material: DIAMOND
           amount: 6
+
+  late_easy_02_stone_1000:
+    enabled: true
+    name: "&7[Late] Stone Stock"
+    description:
+      - "&7Quick builder contract."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: STONE
+          display: "&7Stone"
+          amount: 1000
     rewards:
-      mode: CHOICE
+      mode: ALL
       options:
         - type: XP
-          amount: 3000
+          amount: 10000
         - type: ITEM
-          material: GOLDEN_APPLE
-          amount: 3
+          material: QUARTZ_BLOCK
+          amount: 32
 
-  ender_supplies_hard:
+  late_easy_03_quartz_256:
     enabled: true
-    name: "&5Ender Supplies"
+    name: "&7[Late] Quartz Runner"
     description:
-      - "&7Gather Ender materials."
-    difficulty: HARD
+      - "&7Nether resource run."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: QUARTZ
+          display: "&fQuartz"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 11000
+        - type: ITEM
+          material: QUARTZ_BLOCK
+          amount: 64
+
+  late_easy_04_redstone_1000_deliver:
+    enabled: true
+    name: "&7[Late] Redstone Supply"
+    description:
+      - "&7Deliver redstone."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: REDSTONE
+          display: "&cRedstone"
+          amount: 1000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 13000
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_easy_05_lapis_512_deliver:
+    enabled: true
+    name: "&7[Late] Lapis Shipment"
+    description:
+      - "&7Deliver lapis for enchanting."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: LAPIS_LAZULI
+          display: "&9Lapis Lazuli"
+          amount: 512
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 14000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 48
+
+  late_easy_06_enderpearl_64_deliver:
+    enabled: true
+    name: "&7[Late] Pearl Dropoff"
+    description:
+      - "&7Deliver ender pearls."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: ENDER_PEARL
+          display: "&5Ender Pearl"
+          amount: 64
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 14000
+        - type: ITEM
+          material: DIAMOND
+          amount: 4
+
+  late_easy_07_enderman_150:
+    enabled: true
+    name: "&7[Late] Enderman Sweep"
+    description:
+      - "&7Light end grind."
+    difficulty: EASY
     completion: ALL
     objectives:
       - type: KILL_MOB
         target:
           entity: ENDERMAN
           display: "&5Enderman"
-          amount: 12
-      - type: ITEM
-        target:
+          amount: 150
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 15000
+        - type: ITEM
           material: ENDER_PEARL
-          display: "&5Ender Pearl"
+          amount: 48
+
+  late_easy_08_shulker_20:
+    enabled: true
+    name: "&7[Late] Shulker Patrol"
+    description:
+      - "&7Small End City cleanup."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 20
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 16000
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 8
+
+  late_easy_09_guardian_25:
+    enabled: true
+    name: "&7[Late] Guardian Sweep"
+    description:
+      - "&7Light ocean combat."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: GUARDIAN
+          display: "&3Guardian"
+          amount: 25
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 16000
+        - type: ITEM
+          material: PRISMARINE_SHARD
+          amount: 48
+
+  late_easy_10_blackstone_1000:
+    enabled: true
+    name: "&7[Late] Blackstone Stack"
+    description:
+      - "&7Deliver blackstone for builds."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: BLACKSTONE
+          display: "&8Blackstone"
+          amount: 1000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 12000
+        - type: ITEM
+          material: QUARTZ_BLOCK
+          amount: 48
+
+  late_easy_11_netherrack_2000:
+    enabled: true
+    name: "&7[Late] Nether Cleanup"
+    description:
+      - "&7Clear nether terrain."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: NETHERRACK
+          display: "&cNetherrack"
+          amount: 2000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 14000
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 24
+
+  late_easy_12_endstone_1500:
+    enabled: true
+    name: "&7[Late] Endstone Haul"
+    description:
+      - "&7Bring endstone blocks."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: END_STONE
+          display: "&dEnd Stone"
+          amount: 1500
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 15000
+        - type: ITEM
+          material: END_ROD
+          amount: 16
+
+  late_easy_13_obsidian_128:
+    enabled: true
+    name: "&7[Late] Obsidian Stack"
+    description:
+      - "&7Collect obsidian."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: OBSIDIAN
+          display: "&5Obsidian"
+          amount: 128
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 17000
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_easy_14_crying_48:
+    enabled: true
+    name: "&7[Late] Crying Cache"
+    description:
+      - "&7Collect crying obsidian."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: CRYING_OBSIDIAN
+          display: "&dCrying Obsidian"
+          amount: 48
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 15000
+        - type: ITEM
+          material: GLOWSTONE
+          amount: 32
+
+  late_easy_15_glowstone_256:
+    enabled: true
+    name: "&7[Late] Glowstone Run"
+    description:
+      - "&7Brighten the base."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: GLOWSTONE
+          display: "&eGlowstone"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 15000
+        - type: ITEM
+          material: SEA_LANTERN
+          amount: 8
+
+  late_easy_16_magma_256:
+    enabled: true
+    name: "&7[Late] Magma Delivery"
+    description:
+      - "&7Deliver magma blocks."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: MAGMA_BLOCK
+          display: "&6Magma Block"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 13000
+        - type: ITEM
+          material: GOLD_INGOT
+          amount: 32
+
+  late_easy_17_bone_512:
+    enabled: true
+    name: "&7[Late] Bone Meal Factory"
+    description:
+      - "&7Deliver bones."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: BONE
+          display: "&fBone"
+          amount: 512
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 14000
+        - type: ITEM
+          material: EMERALD
+          amount: 16
+
+  late_easy_18_string_512:
+    enabled: true
+    name: "&7[Late] String Shipment"
+    description:
+      - "&7Deliver string."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: STRING
+          display: "&fString"
+          amount: 512
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 13000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 24
+
+  late_easy_19_iron_256_deliver:
+    enabled: true
+    name: "&7[Late] Iron Supply"
+    description:
+      - "&7Deliver iron ingots."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: IRON_INGOT
+          display: "&fIron Ingot"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 17000
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_easy_20_gold_192_deliver:
+    enabled: true
+    name: "&7[Late] Gold Supply"
+    description:
+      - "&7Deliver gold ingots."
+    difficulty: EASY
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: GOLD_INGOT
+          display: "&6Gold Ingot"
+          amount: 192
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 17000
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_medium_01_deepslate_2000_deliver:
+    enabled: true
+    name: "&e[Late] Deepcore Contract"
+    description:
+      - "&7Serious mining delivery."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: DEEPSLATE
+          display: "&8Deepslate"
+          amount: 2000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 22000
+        - type: ITEM
+          material: DIAMOND
+          amount: 10
+
+  late_medium_02_obsidian_256_collect:
+    enabled: true
+    name: "&e[Late] Obsidian Stockpile"
+    description:
+      - "&7Collect heavy obsidian."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: OBSIDIAN
+          display: "&5Obsidian"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 24000
+        - type: ITEM
+          material: DIAMOND
+          amount: 10
+
+  late_medium_03_quartzblock_256_deliver:
+    enabled: true
+    name: "&e[Late] Quartz Blocks"
+    description:
+      - "&7Deliver quartz blocks."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: QUARTZ_BLOCK
+          display: "&fQuartz Block"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 24000
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 1
+        - type: ITEM
+          material: DIAMOND
           amount: 6
+
+  late_medium_04_end_city_plus:
+    enabled: true
+    name: "&e[Late] End City Operation"
+    description:
+      - "&7Find a city and clear it."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: END_CITY
+          display: "&dEnd City"
+          amount: 1
+          searchRadius: 6
+          nearBlocks: 200
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 25
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 32000
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 10
+        - type: ITEM
+          material: DIAMOND
+          amount: 8
+
+  late_medium_05_bastion_plus:
+    enabled: true
+    name: "&e[Late] Bastion Raid"
+    description:
+      - "&7Find a bastion and fight."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: BASTION_REMNANT
+          display: "&6Bastion Remnant"
+          amount: 1
+          searchRadius: 5
+          nearBlocks: 180
+      - type: KILL_MOB
+        target:
+          entity: PIGLIN_BRUTE
+          display: "&6Piglin Brute"
+          amount: 10
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 30000
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 4
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+
+  late_medium_06_monument_plus:
+    enabled: true
+    name: "&e[Late] Monument Break-In"
+    description:
+      - "&7Find a monument and clear it."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: OCEAN_MONUMENT
+          display: "&3Ocean Monument"
+          amount: 1
+          searchRadius: 6
+          nearBlocks: 220
+      - type: KILL_MOB
+        target:
+          entity: GUARDIAN
+          display: "&3Guardian"
+          amount: 40
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 34000
+        - type: ITEM
+          material: SPONGE
+          amount: 6
+        - type: ITEM
+          material: SEA_LANTERN
+          amount: 12
+
+  late_medium_07_fortress_plus:
+    enabled: true
+    name: "&e[Late] Fortress Contract"
+    description:
+      - "&7Find a fortress and grind."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: NETHER_FORTRESS
+          display: "&6Nether Fortress"
+          amount: 1
+          searchRadius: 5
+          nearBlocks: 200
+      - type: KILL_MOB
+        target:
+          entity: WITHER_SKELETON
+          display: "&0Wither Skeleton"
+          amount: 80
     rewards:
       mode: CHOICE
       options:
+        - type: BUNDLE
+          name: "&aSkull Route"
+          rewards:
+            - type: XP
+              amount: 52000
+            - type: ITEM
+              material: WITHER_SKELETON_SKULL
+              amount: 1
+            - type: ITEM
+              material: DIAMOND
+              amount: 10
+        - type: BUNDLE
+          name: "&bBlock Route"
+          rewards:
+            - type: XP
+              amount: 52000
+            - type: ITEM
+              material: DIAMOND_BLOCK
+              amount: 1
+            - type: ITEM
+              material: GOLD_BLOCK
+              amount: 6
+
+  late_medium_08_ancient_debris_10:
+    enabled: true
+    name: "&e[Late] Debris Route"
+    description:
+      - "&7Dangerous nether mining."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: ANCIENT_DEBRIS
+          display: "&6Ancient Debris"
+          amount: 10
+    rewards:
+      mode: ALL
+      options:
         - type: XP
-          amount: 2800
+          amount: 42000
+        - type: ITEM
+          material: NETHERITE_SCRAP
+          amount: 5
+        - type: ITEM
+          material: DIAMOND
+          amount: 10
+
+  late_medium_09_lapis_2048_deliver:
+    enabled: true
+    name: "&e[Late] Enchanting Supply"
+    description:
+      - "&7Deliver lots of lapis."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: LAPIS_LAZULI
+          display: "&9Lapis Lazuli"
+          amount: 2048
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 42000
         - type: ITEM
           material: EXPERIENCE_BOTTLE
-          amount: 32
+          amount: 128
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
 
-  ocean_cleanup_medium:
+  late_medium_10_redstone_2500_deliver:
     enabled: true
-    name: "&bOcean Cleanup"
+    name: "&e[Late] Redstone Industry"
     description:
-      - "&7Clear threats in the ocean."
+      - "&7Power the machines."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: REDSTONE
+          display: "&cRedstone"
+          amount: 2500
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 42000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 96
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+
+  late_medium_11_enderman_350:
+    enabled: true
+    name: "&e[Late] Enderman Harvest"
+    description:
+      - "&7Mid end grind."
     difficulty: MEDIUM
     completion: ALL
     objectives:
       - type: KILL_MOB
         target:
-          entity: DROWNED
-          display: "&3Drowned"
-          amount: 10
-      - type: BIOME
-        target:
-          biome: OCEAN
-          display: "&bOcean"
-          amount: 1
+          entity: ENDERMAN
+          display: "&5Enderman"
+          amount: 350
     rewards:
-      mode: RANDOM
+      mode: ALL
       options:
         - type: XP
-          amount: 1100
+          amount: 36000
         - type: ITEM
-          material: TRIDENT
+          material: ENDER_PEARL
+          amount: 96
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+
+  late_medium_12_shulker_50:
+    enabled: true
+    name: "&e[Late] Shulker Cleanup"
+    description:
+      - "&7Bigger End City cleanup."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 50
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 42000
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 16
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+
+  late_medium_13_shell_deliver_16:
+    enabled: true
+    name: "&e[Late] Shell Delivery"
+    description:
+      - "&7Deliver shulker shells."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: SHULKER_SHELL
+          display: "&dShulker Shell"
+          amount: 16
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 52000
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
           amount: 1
 
-  deep_dark_risk_hard:
+  late_medium_14_prismarine_1500_deliver:
     enabled: true
-    name: "&5Deep Dark Risk"
+    name: "&e[Late] Prismarine Delivery"
     description:
-      - "&7Explore the Deep Dark carefully."
-    difficulty: HARD
+      - "&7Deliver prismarine blocks."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: PRISMARINE
+          display: "&3Prismarine"
+          amount: 1500
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 38000
+        - type: ITEM
+          material: SEA_LANTERN
+          amount: 24
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+
+  late_medium_15_glass_2048:
+    enabled: true
+    name: "&e[Late] Glass Factory"
+    description:
+      - "&7Deliver lots of glass."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: GLASS
+          display: "&fGlass"
+          amount: 2048
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 32000
+        - type: ITEM
+          material: SEA_LANTERN
+          amount: 16
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_medium_16_terracotta_2500:
+    enabled: true
+    name: "&e[Late] Terracotta Supply"
+    description:
+      - "&7Deliver terracotta."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: TERRACOTTA
+          display: "&6Terracotta"
+          amount: 2500
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 34000
+        - type: ITEM
+          material: QUARTZ_BLOCK
+          amount: 96
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_medium_17_concrete_2048:
+    enabled: true
+    name: "&e[Late] Concrete Order"
+    description:
+      - "&7Deliver concrete powder."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: WHITE_CONCRETE_POWDER
+          display: "&fConcrete Powder"
+          amount: 2048
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 32000
+        - type: ITEM
+          material: QUARTZ_BLOCK
+          amount: 64
+        - type: ITEM
+          material: DIAMOND
+          amount: 5
+
+  late_medium_18_ironblock_96:
+    enabled: true
+    name: "&e[Late] Iron Company"
+    description:
+      - "&7Deliver iron blocks."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: IRON_BLOCK
+          display: "&fIron Block"
+          amount: 96
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 42000
+        - type: ITEM
+          material: DIAMOND
+          amount: 8
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 64
+
+  late_medium_19_goldblock_64:
+    enabled: true
+    name: "&e[Late] Gold Company"
+    description:
+      - "&7Deliver gold blocks."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: GOLD_BLOCK
+          display: "&6Gold Block"
+          amount: 64
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 42000
+        - type: ITEM
+          material: DIAMOND
+          amount: 8
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 1
+
+  late_medium_20_mansion_structure:
+    enabled: true
+    name: "&e[Late] Mansion Recon"
+    description:
+      - "&7Locate a mansion and fight."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: WOODLAND_MANSION
+          display: "&2Woodland Mansion"
+          amount: 1
+          searchRadius: 7
+          nearBlocks: 260
+      - type: KILL_MOB
+        target:
+          entity: VINDICATOR
+          display: "&fVindicator"
+          amount: 20
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 52000
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+
+  late_medium_21_evoker_4:
+    enabled: true
+    name: "&e[Late] Evoker Hunt"
+    description:
+      - "&7Defeat evokers."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: EVOKER
+          display: "&5Evoker"
+          amount: 4
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 60000
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 1
+        - type: ITEM
+          material: DIAMOND
+          amount: 6
+
+  late_medium_22_deepdark_biome_plus:
+    enabled: true
+    name: "&e[Late] Deep Dark Run"
+    description:
+      - "&7Enter and bring proof."
+    difficulty: MEDIUM
     completion: ALL
     objectives:
       - type: BIOME
@@ -315,70 +1018,939 @@ quests:
           biome: DEEP_DARK
           display: "&8Deep Dark"
           amount: 1
-      - type: ITEM
+      - type: DELIVER
         target:
           material: SCULK
-          display: "&8Sculk"
-          amount: 16
+          display: "&3Sculk"
+          amount: 256
     rewards:
-      mode: CHOICE
+      mode: ALL
       options:
         - type: XP
-          amount: 3500
+          amount: 42000
         - type: ITEM
-          material: AMETHYST_SHARD
-          amount: 16
+          material: ECHO_SHARD
+          amount: 3
 
-  advanced_mining_hard:
+  late_medium_23_ancient_city_structure:
     enabled: true
-    name: "&7Advanced Mining"
+    name: "&e[Late] Ancient City Recon"
     description:
-      - "&7Mine valuable resources."
-    difficulty: HARD
+      - "&7Locate an ancient city."
+    difficulty: MEDIUM
     completion: ALL
     objectives:
-      - type: ITEM
+      - type: STRUCTURE
+        target:
+          structure: ANCIENT_CITY
+          display: "&5Ancient City"
+          amount: 1
+          searchRadius: 6
+          nearBlocks: 220
+      - type: DELIVER
+        target:
+          material: SCULK_CATALYST
+          display: "&3Sculk Catalyst"
+          amount: 4
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 52000
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 6
+
+  late_medium_24_diamond_sacrifice_24:
+    enabled: true
+    name: "&e[Late] The Investment"
+    description:
+      - "&7Sacrifice diamonds for power."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
         target:
           material: DIAMOND
           display: "&bDiamond"
+          amount: 24
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 80000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 128
+
+  late_medium_25_blazerod_32_deliver:
+    enabled: true
+    name: "&e[Late] Blaze Logistics"
+    description:
+      - "&7Deliver blaze rods."
+    difficulty: MEDIUM
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: BLAZE_ROD
+          display: "&6Blaze Rod"
+          amount: 32
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 42000
+        - type: ITEM
+          material: FIRE_RESISTANCE_POTION
+          amount: 4
+        - type: ITEM
+          material: DIAMOND
           amount: 6
-      - type: ITEM
+
+  late_hard_01_deepslate_4000_deliver:
+    enabled: true
+    name: "&c[Late] Deepcore Shipment XL"
+    description:
+      - "&7Industrial-scale mining."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: DEEPSLATE
+          display: "&8Deepslate"
+          amount: 4000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 60000
+        - type: ITEM
+          material: DIAMOND
+          amount: 18
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 2
+
+  late_hard_02_stone_8000_deliver:
+    enabled: true
+    name: "&c[Late] Mega Builder Contract"
+    description:
+      - "&7Industrial building materials."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: STONE
+          display: "&7Stone"
+          amount: 8000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 52000
+        - type: ITEM
+          material: QUARTZ_BLOCK
+          amount: 192
+        - type: ITEM
+          material: SEA_LANTERN
+          amount: 32
+
+  late_hard_03_redstone_4000_deliver:
+    enabled: true
+    name: "&c[Late] Redstone Megacorp"
+    description:
+      - "&7Power an empire."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
         target:
           material: REDSTONE
           display: "&cRedstone"
+          amount: 4000
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 65000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 160
+        - type: ITEM
+          material: DIAMOND
+          amount: 14
+
+  late_hard_04_lapis_4096_deliver:
+    enabled: true
+    name: "&c[Late] Enchanting Megasupply"
+    description:
+      - "&7Enough lapis for everyone."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: LAPIS_LAZULI
+          display: "&9Lapis Lazuli"
+          amount: 4096
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 80000
+        - type: ITEM
+          material: EXPERIENCE_BOTTLE
+          amount: 192
+        - type: ITEM
+          material: DIAMOND
+          amount: 12
+
+  late_hard_05_end_city_campaign:
+    enabled: true
+    name: "&c[Late] End City Campaign"
+    description:
+      - "&7Multiple cities. Massive fights."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: END_CITY
+          display: "&dEnd City"
+          amount: 2
+          searchRadius: 7
+          nearBlocks: 220
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 80
+      - type: DELIVER
+        target:
+          material: SHULKER_SHELL
+          display: "&dShulker Shell"
+          amount: 32
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 95000
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 4
+
+  late_hard_06_bastion_domination:
+    enabled: true
+    name: "&c[Late] Bastion Domination"
+    description:
+      - "&7Not just finding. Taking over."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: BASTION_REMNANT
+          display: "&6Bastion Remnant"
+          amount: 2
+          searchRadius: 6
+          nearBlocks: 220
+      - type: KILL_MOB
+        target:
+          entity: PIGLIN_BRUTE
+          display: "&6Piglin Brute"
+          amount: 35
+      - type: DELIVER
+        target:
+          material: GOLD_BLOCK
+          display: "&6Gold Block"
           amount: 32
     rewards:
       mode: CHOICE
       options:
-        - type: XP
-          amount: 3000
-        - type: ITEM
-          material: DIAMOND_PICKAXE
-          amount: 1
+        - type: BUNDLE
+          name: "&6Raider Bundle"
+          rewards:
+            - type: XP
+              amount: 110000
+            - type: ITEM
+              material: NETHERITE_SCRAP
+              amount: 4
+            - type: ITEM
+              material: DIAMOND
+              amount: 16
+            - type: ITEM
+              material: ENCHANTED_GOLDEN_APPLE
+              amount: 3
+        - type: BUNDLE
+          name: "&bBuilder Bundle"
+          rewards:
+            - type: XP
+              amount: 110000
+            - type: ITEM
+              material: QUARTZ_BLOCK
+              amount: 256
+            - type: ITEM
+              material: BLACKSTONE
+              amount: 512
+            - type: ITEM
+              material: SEA_LANTERN
+              amount: 48
 
-  guardian_threat_hard:
+  late_hard_07_fortress_tyrant:
     enabled: true
-    name: "&3Guardian Threat"
+    name: "&c[Late] Fortress Tyrant"
     description:
-      - "&7Deal with ocean guardians."
+      - "&7Fortresses, skulls, sacrifice."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: NETHER_FORTRESS
+          display: "&6Nether Fortress"
+          amount: 2
+          searchRadius: 6
+          nearBlocks: 220
+      - type: KILL_MOB
+        target:
+          entity: WITHER_SKELETON
+          display: "&0Wither Skeleton"
+          amount: 220
+      - type: DELIVER
+        target:
+          material: WITHER_SKELETON_SKULL
+          display: "&0Wither Skull"
+          amount: 3
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 140000
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 24
+
+  late_hard_08_double_wither:
+    enabled: true
+    name: "&c[Late] Double Wither"
+    description:
+      - "&7Two bosses. No excuses."
     difficulty: HARD
     completion: ALL
     objectives:
       - type: KILL_MOB
         target:
+          entity: WITHER
+          display: "&0Wither"
+          amount: 2
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 180000
+        - type: ITEM
+          material: NETHER_STAR
+          amount: 2
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+
+  late_hard_09_monument_purge:
+    enabled: true
+    name: "&c[Late] Monument Purge"
+    description:
+      - "&7Find monuments and purge them."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: OCEAN_MONUMENT
+          display: "&3Ocean Monument"
+          amount: 2
+          searchRadius: 7
+          nearBlocks: 240
+      - type: KILL_MOB
+        target:
           entity: GUARDIAN
           display: "&3Guardian"
-          amount: 8
-      - type: ITEM
+          amount: 120
+      - type: DELIVER
         target:
-          material: PRISMARINE_SHARD
-          display: "&3Prismarine Shard"
+          material: SEA_LANTERN
+          display: "&bSea Lantern"
+          amount: 64
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 120000
+        - type: ITEM
+          material: SPONGE
+          amount: 16
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+
+  late_hard_10_deepdark_conquest:
+    enabled: true
+    name: "&c[Late] Deep Dark Conquest"
+    description:
+      - "&7Cities, wardens, and relics."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: ANCIENT_CITY
+          display: "&5Ancient City"
+          amount: 2
+          searchRadius: 7
+          nearBlocks: 240
+      - type: KILL_MOB
+        target:
+          entity: WARDEN
+          display: "&5Warden"
+          amount: 2
+      - type: DELIVER
+        target:
+          material: ECHO_SHARD
+          display: "&5Echo Shard"
           amount: 16
     rewards:
       mode: CHOICE
       options:
+        - type: BUNDLE
+          name: "&5Relic Bundle"
+          rewards:
+            - type: XP
+              amount: 200000
+            - type: ITEM
+              material: ECHO_SHARD
+              amount: 24
+            - type: ITEM
+              material: DIAMOND_BLOCK
+              amount: 3
+            - type: ITEM
+              material: ENCHANTED_GOLDEN_APPLE
+              amount: 6
+        - type: BUNDLE
+          name: "&bXP Bundle"
+          rewards:
+            - type: XP
+              amount: 260000
+            - type: ITEM
+              material: EXPERIENCE_BOTTLE
+              amount: 256
+            - type: ITEM
+              material: DIAMOND
+              amount: 12
+
+  late_hard_11_diamond_tax:
+    enabled: true
+    name: "&c[Late] Diamond Tax"
+    description:
+      - "&7Sacrifice wealth for huge power."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: DIAMOND_BLOCK
+          display: "&bDiamond Block"
+          amount: 12
+    rewards:
+      mode: ALL
+      options:
         - type: XP
-          amount: 4000
+          amount: 220000
         - type: ITEM
-          material: SEA_LANTERN
+          material: NETHERITE_INGOT
+          amount: 3
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 6
+
+  late_hard_12_scrap_16_deliver:
+    enabled: true
+    name: "&c[Late] Scrap Megashipment"
+    description:
+      - "&7Deliver netherite scrap."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: NETHERITE_SCRAP
+          display: "&6Netherite Scrap"
+          amount: 16
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 160000
+        - type: ITEM
+          material: NETHERITE_INGOT
           amount: 4
+        - type: ITEM
+          material: DIAMOND
+          amount: 16
+
+  late_hard_13_enderman_800:
+    enabled: true
+    name: "&c[Late] Enderman Genocide"
+    description:
+      - "&7Massive enderman grind."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: ENDERMAN
+          display: "&5Enderman"
+          amount: 800
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 120000
+        - type: ITEM
+          material: ENDER_PEARL
+          amount: 128
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+
+  late_hard_14_mansion_war:
+    enabled: true
+    name: "&c[Late] Mansion War"
+    description:
+      - "&7Locate and clear the mansion."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: WOODLAND_MANSION
+          display: "&2Woodland Mansion"
+          amount: 1
+          searchRadius: 8
+          nearBlocks: 280
+      - type: KILL_MOB
+        target:
+          entity: VINDICATOR
+          display: "&fVindicator"
+          amount: 60
+      - type: KILL_MOB
+        target:
+          entity: EVOKER
+          display: "&5Evoker"
+          amount: 8
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 140000
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 2
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+
+  late_hard_15_ancient_debris_24:
+    enabled: true
+    name: "&c[Late] Debris Marathon"
+    description:
+      - "&7Massive nether mining."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: COLLECT
+        target:
+          material: ANCIENT_DEBRIS
+          display: "&6Ancient Debris"
+          amount: 24
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 150000
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 2
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 1
+
+  late_hard_16_wither_skeleton_400:
+    enabled: true
+    name: "&c[Late] Fortress Grinder"
+    description:
+      - "&7Hardcore skull farming."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: WITHER_SKELETON
+          display: "&0Wither Skeleton"
+          amount: 400
+      - type: DELIVER
+        target:
+          material: WITHER_SKELETON_SKULL
+          display: "&0Wither Skull"
+          amount: 6
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 180000
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 3
+        - type: ITEM
+          material: GOLD_BLOCK
+          amount: 32
+
+  late_hard_17_double_warden:
+    enabled: true
+    name: "&c[Late] Warden Double"
+    description:
+      - "&7Two wardens. Brutal."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: KILL_MOB
+        target:
+          entity: WARDEN
+          display: "&5Warden"
+          amount: 2
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 200000
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 20
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+
+  late_hard_18_beacon_base_256_iron:
+    enabled: true
+    name: "&c[Late] Beacon Foundation"
+    description:
+      - "&7Massive beacon base supply."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: IRON_BLOCK
+          display: "&fIron Block"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 120000
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+        - type: ITEM
+          material: EMERALD_BLOCK
+          amount: 2
+
+  late_hard_19_end_crystal_32_deliver:
+    enabled: true
+    name: "&c[Late] End Crystal Stock"
+    description:
+      - "&7Deliver end crystals."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: END_CRYSTAL
+          display: "&dEnd Crystal"
+          amount: 32
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 110000
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 2
+        - type: ITEM
+          material: GLOWSTONE
+          amount: 128
+
+  late_hard_20_random_high_roll:
+    enabled: true
+    name: "&c[Late] High Reward Roll"
+    description:
+      - "&7Hard grind, random payoff."
+    difficulty: HARD
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: DEEPSLATE
+          display: "&8Deepslate"
+          amount: 6000
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 90
+    rewards:
+      mode: RANDOM
+      options:
+        - type: BUNDLE
+          name: "&eWealth Pack"
+          rewards:
+            - type: XP
+              amount: 140000
+            - type: ITEM
+              material: DIAMOND_BLOCK
+              amount: 3
+            - type: ITEM
+              material: EMERALD_BLOCK
+              amount: 3
+        - type: BUNDLE
+          name: "&bEnchant Pack"
+          rewards:
+            - type: XP
+              amount: 180000
+            - type: ITEM
+              material: EXPERIENCE_BOTTLE
+              amount: 256
+            - type: ITEM
+              material: LAPIS_LAZULI
+              amount: 512
+
+  late_extreme_01_final_contract:
+    enabled: true
+    name: "&4&l[EXTREME] The Final Contract"
+    description:
+      - "&7Only for legends."
+    difficulty: EXTREME
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: DEEPSLATE
+          display: "&8Deepslate"
+          amount: 12000
+      - type: KILL_MOB
+        target:
+          entity: WARDEN
+          display: "&5Warden"
+          amount: 3
+      - type: KILL_MOB
+        target:
+          entity: WITHER
+          display: "&0Wither"
+          amount: 3
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 120
+      - type: DELIVER
+        target:
+          material: DIAMOND_BLOCK
+          display: "&bDiamond Block"
+          amount: 16
+    rewards:
+      mode: CHOICE
+      options:
+        - type: BUNDLE
+          name: "&6&lLegendary Combat"
+          rewards:
+            - type: XP
+              amount: 350000
+            - type: ITEM
+              material: NETHERITE_INGOT
+              amount: 16
+            - type: ITEM
+              material: TOTEM_OF_UNDYING
+              amount: 6
+            - type: ITEM
+              material: ENCHANTED_GOLDEN_APPLE
+              amount: 16
+        - type: BUNDLE
+          name: "&b&lLegendary Builder"
+          rewards:
+            - type: XP
+              amount: 350000
+            - type: ITEM
+              material: DIAMOND_BLOCK
+              amount: 32
+            - type: ITEM
+              material: SHULKER_SHELL
+              amount: 128
+
+  late_extreme_02_world_breaker:
+    enabled: true
+    name: "&4&l[EXTREME] World Breaker"
+    description:
+      - "&7Pure grind and bosses."
+    difficulty: EXTREME
+    completion: ALL
+    objectives:
+      - type: DELIVER
+        target:
+          material: STONE
+          display: "&7Stone"
+          amount: 20000
+      - type: KILL_MOB
+        target:
+          entity: WITHER
+          display: "&0Wither"
+          amount: 4
+      - type: DELIVER
+        target:
+          material: NETHERITE_SCRAP
+          display: "&6Netherite Scrap"
+          amount: 24
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 420000
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 20
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 24
+
+  late_extreme_03_ocean_terror:
+    enabled: true
+    name: "&4&l[EXTREME] Ocean Terror"
+    description:
+      - "&7Monuments become yours."
+    difficulty: EXTREME
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: OCEAN_MONUMENT
+          display: "&3Ocean Monument"
+          amount: 3
+          searchRadius: 8
+          nearBlocks: 280
+      - type: KILL_MOB
+        target:
+          entity: GUARDIAN
+          display: "&3Guardian"
+          amount: 300
+      - type: DELIVER
+        target:
+          material: SEA_LANTERN
+          display: "&bSea Lantern"
+          amount: 256
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 380000
+        - type: ITEM
+          material: SPONGE
+          amount: 32
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 8
+
+  late_extreme_04_deepdark_overlord:
+    enabled: true
+    name: "&4&l[EXTREME] Deep Dark Overlord"
+    description:
+      - "&7No stealth. Only power."
+    difficulty: EXTREME
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: ANCIENT_CITY
+          display: "&5Ancient City"
+          amount: 3
+          searchRadius: 8
+          nearBlocks: 280
+      - type: KILL_MOB
+        target:
+          entity: WARDEN
+          display: "&5Warden"
+          amount: 5
+      - type: DELIVER
+        target:
+          material: ECHO_SHARD
+          display: "&5Echo Shard"
+          amount: 48
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 450000
+        - type: ITEM
+          material: ECHO_SHARD
+          amount: 64
+        - type: ITEM
+          material: NETHERITE_INGOT
+          amount: 12
+        - type: ITEM
+          material: TOTEM_OF_UNDYING
+          amount: 4
+
+  late_extreme_05_end_emperor:
+    enabled: true
+    name: "&4&l[EXTREME] End Emperor"
+    description:
+      - "&7Own the End."
+    difficulty: EXTREME
+    completion: ALL
+    objectives:
+      - type: STRUCTURE
+        target:
+          structure: END_CITY
+          display: "&dEnd City"
+          amount: 4
+          searchRadius: 8
+          nearBlocks: 280
+      - type: KILL_MOB
+        target:
+          entity: SHULKER
+          display: "&dShulker"
+          amount: 400
+      - type: DELIVER
+        target:
+          material: SHULKER_SHELL
+          display: "&dShulker Shell"
+          amount: 128
+    rewards:
+      mode: ALL
+      options:
+        - type: XP
+          amount: 420000
+        - type: ITEM
+          material: SHULKER_SHELL
+          amount: 256
+        - type: ITEM
+          material: DIAMOND_BLOCK
+          amount: 10
+        - type: ITEM
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 12

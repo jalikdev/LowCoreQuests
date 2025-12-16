@@ -12,6 +12,7 @@ import dev.jalikdev.lowCoreQuests.reward.Reward;
 import dev.jalikdev.lowCoreQuests.reward.RewardBundle;
 import dev.jalikdev.lowCoreQuests.reward.RewardMode;
 import dev.jalikdev.lowCoreQuests.util.InventoryUtil;
+import dev.jalikdev.lowCoreQuests.util.StructureUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -43,6 +44,8 @@ public class QuestService {
     private final Map<UUID, Long> lastStructureCheck = new ConcurrentHashMap<>();
     private static final long STRUCTURE_CHECK_COOLDOWN_MS = 3000L;
 
+    private static final double EXTREME_CHANCE = 0.03;
+
     private final Random random = new Random();
 
     public QuestService(LowCore core, QuestConfig questConfig, StoryConfig storyConfig,
@@ -71,13 +74,21 @@ public class QuestService {
         });
     }
 
-    public PlayerQuestState getActive(UUID uuid) { return active.get(uuid); }
+    public PlayerQuestState getActive(UUID uuid) {
+        return active.get(uuid);
+    }
 
-    public Map<Integer, Integer> getProgressMap(UUID uuid) { return progress.getOrDefault(uuid, Map.of()); }
+    public Map<Integer, Integer> getProgressMap(UUID uuid) {
+        return progress.getOrDefault(uuid, Map.of());
+    }
 
-    public int getCompletedStoryIndex(UUID uuid) { return completedStoryIndex.getOrDefault(uuid, 0); }
+    public int getCompletedStoryIndex(UUID uuid) {
+        return completedStoryIndex.getOrDefault(uuid, 0);
+    }
 
-    public StatsRepository.Stats getStats(UUID uuid) { return statsCache.getOrDefault(uuid, new StatsRepository.Stats(0, 0, 0)); }
+    public StatsRepository.Stats getStats(UUID uuid) {
+        return statsCache.getOrDefault(uuid, new StatsRepository.Stats(0, 0, 0));
+    }
 
     public QuestDefinition getActiveQuestDefinition(UUID uuid) {
         PlayerQuestState st = active.get(uuid);
@@ -97,7 +108,9 @@ public class QuestService {
         return storyConfig.getNextByCompletedIndex(idx - 1);
     }
 
-    public QuestDefinition getNextStory(UUID uuid) { return storyConfig.getNextByCompletedIndex(getCompletedStoryIndex(uuid)); }
+    public QuestDefinition getNextStory(UUID uuid) {
+        return storyConfig.getNextByCompletedIndex(getCompletedStoryIndex(uuid));
+    }
 
     public QuestDefinition startNextStory(Player player) {
         UUID uuid = player.getUniqueId();
@@ -117,7 +130,24 @@ public class QuestService {
         List<QuestDefinition> pool = new ArrayList<>(questConfig.enabledQuests());
         if (pool.isEmpty()) return null;
 
-        QuestDefinition chosen = pool.get(random.nextInt(pool.size()));
+        List<QuestDefinition> extreme = new ArrayList<>();
+        List<QuestDefinition> normal = new ArrayList<>();
+
+        for (QuestDefinition q : pool) {
+            if (q.difficulty() == Difficulty.EXTREME) extreme.add(q);
+            else normal.add(q);
+        }
+
+        QuestDefinition chosen;
+
+        boolean rollExtreme = !extreme.isEmpty() && random.nextDouble() < EXTREME_CHANCE;
+        if (rollExtreme) {
+            chosen = extreme.get(random.nextInt(extreme.size()));
+        } else {
+            List<QuestDefinition> base = normal.isEmpty() ? pool : normal;
+            chosen = base.get(random.nextInt(base.size()));
+        }
+
         boolean ok = start(player, chosen.id());
         return ok ? chosen : null;
     }
@@ -210,13 +240,11 @@ public class QuestService {
             Structure structure = Registry.STRUCTURE.get(key);
             if (structure == null) continue;
 
-            int radius = Math.max(1, obj.searchRadius());
-            int near = Math.max(16, obj.nearBlocks());
-
-            Location found = loc.getWorld().locateNearestStructure(loc, structure, radius, false);
+            Object result = loc.getWorld().locateNearestStructure(loc, structure, Math.max(1, obj.searchRadius()), false);
+            Location found = StructureUtil.extractLocation(result, loc.getWorld());
             if (found == null) continue;
 
-            if (!found.getWorld().equals(loc.getWorld())) continue;
+            int near = Math.max(16, obj.nearBlocks());
             if (found.distanceSquared(loc) <= (double) near * (double) near) {
                 setProgress(player, i, obj.required());
             }
@@ -375,11 +403,12 @@ public class QuestService {
 
             statsRepo.increment(uuid, isStory);
             StatsRepository.Stats cur = statsCache.getOrDefault(uuid, new StatsRepository.Stats(0, 0, 0));
-            statsCache.put(uuid, new StatsRepository.Stats(
+            StatsRepository.Stats next = new StatsRepository.Stats(
                     cur.total() + 1,
                     cur.story() + (isStory ? 1 : 0),
                     cur.random() + (isStory ? 0 : 1)
-            ));
+            );
+            statsCache.put(uuid, next);
 
             if (isStory && storyIndex > 0) {
                 int currentCompleted = storyRepo.loadCompletedIndex(uuid);
@@ -394,3 +423,4 @@ public class QuestService {
         });
     }
 }
+

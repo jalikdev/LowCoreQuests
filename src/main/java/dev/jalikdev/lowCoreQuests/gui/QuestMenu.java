@@ -30,11 +30,11 @@ public class QuestMenu {
         Inventory inv = Bukkit.createInventory(null, 54, Text.c("&a" + TITLE));
         fill(inv);
 
-        inv.setItem(4, item(Material.BOOK, "&fQuest Menu", List.of("&7Story + Random quests")));
+        inv.setItem(3, item(Material.BOOK, "&fQuest Menu", List.of("&7Story + Random quests")));
         inv.setItem(49, item(Material.BARRIER, "&cClose", List.of("&7Click to close")));
 
         var stats = service.getStats(player.getUniqueId());
-        inv.setItem(6, item(Material.CLOCK, "&fQuest Stats", List.of(
+        inv.setItem(5, item(Material.CLOCK, "&fQuest Stats", List.of(
                 Text.c("&7Completed: &f" + stats.total()),
                 Text.c("&7Story: &f" + stats.story()),
                 Text.c("&7Random: &f" + stats.random())

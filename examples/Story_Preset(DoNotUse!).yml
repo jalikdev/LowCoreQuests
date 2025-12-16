@@ -1,0 +1,125 @@
+story:
+  enabled: true
+
+  line:
+    - id: demo_story_collect
+      enabled: true
+      name: "&a[Story Demo] Collect"
+      description:
+        - "&7Story quests usually do NOT take items."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: OAK_LOG
+            display: "&6Oak Logs"
+            amount: 16
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 150
+
+    - id: demo_story_kill
+      enabled: true
+      name: "&a[Story Demo] Combat"
+      description:
+        - "&7Kill mobs to progress."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: ZOMBIE
+            display: "&2Zombie"
+            amount: 8
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: COOKED_BEEF
+            amount: 8
+
+    - id: demo_story_biome
+      enabled: true
+      name: "&a[Story Demo] Exploration"
+      description:
+        - "&7Enter a biome."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: BIOME
+          target:
+            biome: PLAINS
+            display: "&aPlains"
+            amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 300
+
+    - id: demo_story_multi
+      enabled: true
+      name: "&e[Story Demo] Multi Task"
+      description:
+        - "&7Story quests can also have multiple tasks."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: IRON_INGOT
+            display: "&fIron Ingot"
+            amount: 12
+        - type: KILL_MOB
+          target:
+            entity: SKELETON
+            display: "&fSkeleton"
+            amount: 5
+      rewards:
+        mode: ALL
+        options:
+          - type: BUNDLE
+            name: "&aStarter Iron Pack"
+            rewards:
+              - type: XP
+                amount: 800
+              - type: ITEM
+                material: IRON_PICKAXE
+                amount: 1
+
+    - id: demo_story_choice_bundle
+      enabled: true
+      name: "&c[Story Demo] Choice Bundle"
+      description:
+        - "&7Final demo: choose your path."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: BIOME
+          target:
+            biome: NETHER_WASTES
+            display: "&cNether"
+            amount: 1
+      rewards:
+        mode: CHOICE
+        options:
+          - type: BUNDLE
+            name: "&6Warrior Path"
+            rewards:
+              - type: XP
+                amount: 2000
+              - type: ITEM
+                material: GOLDEN_APPLE
+                amount: 2
+
+          - type: BUNDLE
+            name: "&bExplorer Path"
+            rewards:
+              - type: XP
+                amount: 1500
+              - type: ITEM
+                material: MAP
+                amount: 1

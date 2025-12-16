@@ -2,11 +2,11 @@ story:
   enabled: true
 
   line:
-    - id: story_01_get_wood
+    - id: story_01_first_logs
       enabled: true
-      name: "&aStory I: Getting Wood"
+      name: "&a[Story] First Logs"
       description:
-        - "&7Punch trees and get logs."
+        - "&7Get wood to start."
       difficulty: EASY
       completion: ALL
       objectives:
@@ -18,14 +18,17 @@ story:
       rewards:
         mode: ALL
         options:
+          - type: ITEM
+            material: BREAD
+            amount: 6
           - type: XP
-            amount: 150
+            amount: 60
 
     - id: story_02_stone_age
       enabled: true
-      name: "&aStory II: Stone Age"
+      name: "&a[Story] Stone Age"
       description:
-        - "&7Mine cobblestone for tools."
+        - "&7Gather stone for tools."
       difficulty: EASY
       completion: ALL
       objectives:
@@ -33,46 +36,323 @@ story:
           target:
             material: COBBLESTONE
             display: "&7Cobblestone"
-            amount: 32
+            amount: 48
       rewards:
         mode: ALL
         options:
           - type: ITEM
             material: TORCH
             amount: 16
+          - type: XP
+            amount: 90
 
-    - id: story_03_iron_ready
+    - id: story_03_basic_food
       enabled: true
-      name: "&eStory III: Iron Ready"
+      name: "&a[Story] Food First"
       description:
-        - "&7Collect iron to upgrade."
-      difficulty: MEDIUM
+        - "&7Prepare some real food."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: COOKED_BEEF
+            display: "&cCooked Beef"
+            amount: 8
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: ARROW
+            amount: 16
+          - type: XP
+            amount: 120
+
+    - id: story_04_first_combat
+      enabled: true
+      name: "&a[Story] First Night"
+      description:
+        - "&7Defend yourself."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: ZOMBIE
+            display: "&2Zombie"
+            amount: 6
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: COOKED_CHICKEN
+            amount: 6
+          - type: XP
+            amount: 160
+
+    - id: story_05_find_village
+      enabled: true
+      name: "&a[Story] Find a Village"
+      description:
+        - "&7Locate civilization."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: VILLAGE
+            display: "&aVillage"
+            amount: 1
+            searchRadius: 2
+            nearBlocks: 80
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: EMERALD
+            amount: 4
+          - type: XP
+            amount: 250
+
+    - id: story_06_iron_age
+      enabled: true
+      name: "&e[Story] Iron Age"
+      description:
+        - "&7Get iron for upgrades."
+      difficulty: EASY
       completion: ALL
       objectives:
         - type: COLLECT
           target:
             material: IRON_INGOT
             display: "&fIron Ingot"
-            amount: 24
+            amount: 12
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: SHIELD
+            amount: 1
+          - type: XP
+            amount: 280
+
+    - id: story_07_cave_clear
+      enabled: true
+      name: "&e[Story] Cave Clear"
+      description:
+        - "&7Clear underground threats."
+      difficulty: EASY
+      completion: ALL
+      objectives:
         - type: KILL_MOB
           target:
-            entity: ZOMBIE
-            display: "&2Zombie"
+            entity: SKELETON
+            display: "&fSkeleton"
+            amount: 8
+        - type: KILL_MOB
+          target:
+            entity: CREEPER
+            display: "&aCreeper"
+            amount: 3
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: TORCH
+            amount: 48
+          - type: XP
+            amount: 350
+
+    - id: story_08_explore_start
+      enabled: true
+      name: "&a[Story] Explore Nearby"
+      description:
+        - "&7Visit some biomes."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: BIOME
+          target:
+            biome: PLAINS
+            display: "&aPlains"
+            amount: 1
+        - type: BIOME
+          target:
+            biome: FOREST
+            display: "&2Forest"
+            amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: MAP
+            amount: 1
+          - type: XP
+            amount: 300
+
+    - id: story_09_shipwreck
+      enabled: true
+      name: "&b[Story] Shipwreck Search"
+      description:
+        - "&7Find a shipwreck."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: SHIPWRECK
+            display: "&bShipwreck"
+            amount: 1
+            searchRadius: 3
+            nearBlocks: 110
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: IRON_INGOT
+            amount: 8
+          - type: XP
+            amount: 400
+
+    - id: story_10_sugarcane_books
+      enabled: true
+      name: "&e[Story] Paper Trail"
+      description:
+        - "&7Get paper materials."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: SUGAR_CANE
+            display: "&aSugar Cane"
+            amount: 32
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: BOOK
+            amount: 6
+          - type: XP
+            amount: 450
+
+    - id: story_11_leather_books
+      enabled: true
+      name: "&e[Story] Leather Supply"
+      description:
+        - "&7Get leather for books."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: LEATHER
+            display: "&6Leather"
             amount: 10
       rewards:
-        mode: CHOICE
+        mode: ALL
+        options:
+          - type: ITEM
+            material: BOOKSHELF
+            amount: 6
+          - type: XP
+            amount: 600
+
+    - id: story_12_lapis
+      enabled: true
+      name: "&9[Story] Lapis Found"
+      description:
+        - "&7Enchanting needs lapis."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: LAPIS_LAZULI
+            display: "&9Lapis Lazuli"
+            amount: 24
+      rewards:
+        mode: ALL
         options:
           - type: XP
-            amount: 900
+            amount: 700
           - type: ITEM
-            material: IRON_PICKAXE
+            material: EXPERIENCE_BOTTLE
+            amount: 8
+
+    - id: story_13_first_diamonds
+      enabled: true
+      name: "&b[Story] First Diamonds"
+      description:
+        - "&7Get diamonds."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: DIAMOND
+            display: "&bDiamond"
+            amount: 6
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 1200
+          - type: ITEM
+            material: ENCHANTING_TABLE
             amount: 1
 
-    - id: story_04_first_nether
+    - id: story_14_obsidian
       enabled: true
-      name: "&cStory IV: First Nether Step"
+      name: "&5[Story] Portal Frames"
       description:
-        - "&7Enter the Nether and survive."
+        - "&7Gather obsidian."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: OBSIDIAN
+            display: "&5Obsidian"
+            amount: 14
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: FLINT_AND_STEEL
+            amount: 1
+          - type: XP
+            amount: 1400
+
+    - id: story_15_ruined_portal
+      enabled: true
+      name: "&c[Story] Ruined Portal"
+      description:
+        - "&7Find a ruined portal."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: RUINED_PORTAL
+            display: "&cRuined Portal"
+            amount: 1
+            searchRadius: 3
+            nearBlocks: 120
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 1600
+          - type: ITEM
+            material: GOLD_INGOT
+            amount: 16
+
+    - id: story_16_enter_nether
+      enabled: true
+      name: "&c[Story] Enter the Nether"
+      description:
+        - "&7Step into the Nether."
       difficulty: MEDIUM
       completion: ALL
       objectives:
@@ -81,43 +361,900 @@ story:
             biome: NETHER_WASTES
             display: "&cNether Wastes"
             amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 2500
+          - type: ITEM
+            material: FIRE_RESISTANCE_POTION
+            amount: 1
+
+    - id: story_17_find_fortress
+      enabled: true
+      name: "&6[Story] Nether Fortress"
+      description:
+        - "&7Locate a fortress."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: NETHER_FORTRESS
+            display: "&6Nether Fortress"
+            amount: 1
+            searchRadius: 4
+            nearBlocks: 140
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 3000
+          - type: ITEM
+            material: GOLDEN_APPLE
+            amount: 2
+
+    - id: story_18_blaze_rods
+      enabled: true
+      name: "&6[Story] Blaze Rods"
+      description:
+        - "&7Collect blaze rods."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
         - type: COLLECT
           target:
-            material: GOLD_INGOT
-            display: "&6Gold Ingot"
+            material: BLAZE_ROD
+            display: "&6Blaze Rod"
+            amount: 10
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 3800
+          - type: ITEM
+            material: FIRE_RESISTANCE_POTION
+            amount: 2
+
+    - id: story_19_ender_pearls
+      enabled: true
+      name: "&5[Story] Ender Pearls"
+      description:
+        - "&7Collect pearls."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: ENDER_PEARL
+            display: "&5Ender Pearl"
+            amount: 12
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 3200
+          - type: ITEM
+            material: EXPERIENCE_BOTTLE
+            amount: 16
+
+    - id: story_20_eyes_ready
+      enabled: true
+      name: "&d[Story] Eyes Ready"
+      description:
+        - "&7Deliver eyes to prove progress."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: ENDER_EYE
+            display: "&dEye of Ender"
             amount: 8
       rewards:
         mode: ALL
         options:
           - type: XP
-            amount: 1400
+            amount: 4200
+          - type: ITEM
+            material: GOLDEN_APPLE
+            amount: 3
 
-    - id: story_05_fortress_run
+    - id: story_21_find_stronghold
       enabled: true
-      name: "&4Story V: Fortress Run"
+      name: "&d[Story] Stronghold"
       description:
-        - "&7Get blaze rods (do not turn in)."
+        - "&7Locate the Stronghold."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: STRONGHOLD
+            display: "&dStronghold"
+            amount: 1
+            searchRadius: 5
+            nearBlocks: 180
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 6500
+          - type: ITEM
+            material: ENDER_PEARL
+            amount: 8
+
+    - id: story_22_enter_end
+      enabled: true
+      name: "&d[Story] Enter the End"
+      description:
+        - "&7Step into the End."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: BIOME
+          target:
+            biome: THE_END
+            display: "&dThe End"
+            amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 9000
+          - type: ITEM
+            material: END_STONE
+            amount: 64
+
+    - id: story_23_dragon
+      enabled: true
+      name: "&5[Story] Dragon Down"
+      description:
+        - "&7Defeat the Ender Dragon."
       difficulty: HARD
       completion: ALL
       objectives:
         - type: KILL_MOB
           target:
-            entity: BLAZE
-            display: "&6Blaze"
-            amount: 12
-        - type: COLLECT
-          target:
-            material: BLAZE_ROD
-            display: "&6Blaze Rod"
-            amount: 8
+            entity: ENDER_DRAGON
+            display: "&5Ender Dragon"
+            amount: 1
       rewards:
         mode: CHOICE
         options:
+          - type: BUNDLE
+            name: "&bWarrior"
+            rewards:
+              - type: XP
+                amount: 18000
+              - type: ITEM
+                material: DIAMOND
+                amount: 12
+              - type: ITEM
+                material: GOLDEN_APPLE
+                amount: 6
+          - type: BUNDLE
+            name: "&dExplorer"
+            rewards:
+              - type: XP
+                amount: 18000
+              - type: ITEM
+                material: END_ROD
+                amount: 24
+              - type: ITEM
+                material: SHULKER_SHELL
+                amount: 6
+
+    - id: story_24_end_city
+      enabled: true
+      name: "&d[Story] End City"
+      description:
+        - "&7Find an End City."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: END_CITY
+            display: "&dEnd City"
+            amount: 1
+            searchRadius: 6
+            nearBlocks: 200
+      rewards:
+        mode: ALL
+        options:
           - type: XP
-            amount: 3500
+            amount: 12000
           - type: ITEM
-            material: GOLDEN_APPLE
+            material: SHULKER_SHELL
+            amount: 6
+
+    - id: story_25_shulker_cleanup
+      enabled: true
+      name: "&d[Story] Shulker Cleanup"
+      description:
+        - "&7Farm Shulkers."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: SHULKER
+            display: "&dShulker"
+            amount: 24
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 14000
+          - type: ITEM
+            material: SHULKER_SHELL
+            amount: 10
+          - type: ITEM
+            material: DIAMOND
+            amount: 6
+
+    - id: story_26_deepslate_push
+      enabled: true
+      name: "&8[Story] Deepslate Push"
+      description:
+        - "&7Big mining step."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: DEEPSLATE
+            display: "&8Deepslate"
+            amount: 1500
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 12000
+          - type: ITEM
+            material: DIAMOND
+            amount: 6
+
+    - id: story_27_bastion
+      enabled: true
+      name: "&6[Story] Bastion Remnant"
+      description:
+        - "&7Locate a Bastion."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: BASTION_REMNANT
+            display: "&6Bastion Remnant"
+            amount: 1
+            searchRadius: 5
+            nearBlocks: 180
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 14000
+          - type: ITEM
+            material: GOLD_BLOCK
+            amount: 2
+
+    - id: story_28_brute_kills
+      enabled: true
+      name: "&6[Story] Brute Problem"
+      description:
+        - "&7Defeat Piglin Brutes."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: PIGLIN_BRUTE
+            display: "&6Piglin Brute"
+            amount: 10
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 16000
+          - type: ITEM
+            material: GOLD_BLOCK
+            amount: 3
+          - type: ITEM
+            material: DIAMOND
+            amount: 4
+
+    - id: story_29_wither_skeleton_grind
+      enabled: true
+      name: "&0[Story] Fortress Grind"
+      description:
+        - "&7Grind Wither Skeletons."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: WITHER_SKELETON
+            display: "&0Wither Skeleton"
+            amount: 80
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 22000
+          - type: ITEM
+            material: DIAMOND
+            amount: 8
+          - type: ITEM
+            material: GOLD_BLOCK
+            amount: 4
+
+    - id: story_30_skulls
+      enabled: true
+      name: "&0[Story] Skulls"
+      description:
+        - "&7Collect the skulls."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: WITHER_SKELETON_SKULL
+            display: "&0Wither Skull"
+            amount: 3
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 30000
+          - type: ITEM
+            material: DIAMOND_BLOCK
+            amount: 1
+
+    - id: story_31_wither
+      enabled: true
+      name: "&4[Story] Wither Boss"
+      description:
+        - "&7Defeat the Wither."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: WITHER
+            display: "&0Wither"
+            amount: 1
+      rewards:
+        mode: CHOICE
+        options:
+          - type: BUNDLE
+            name: "&eBeacon Prep"
+            rewards:
+              - type: XP
+                amount: 60000
+              - type: ITEM
+                material: NETHER_STAR
+                amount: 1
+              - type: ITEM
+                material: DIAMOND_BLOCK
+                amount: 2
+          - type: BUNDLE
+            name: "&bEnchant Boost"
+            rewards:
+              - type: XP
+                amount: 75000
+              - type: ITEM
+                material: EXPERIENCE_BOTTLE
+                amount: 128
+              - type: ITEM
+                material: LAPIS_LAZULI
+                amount: 128
+
+    - id: story_32_monument
+      enabled: true
+      name: "&3[Story] Ocean Monument"
+      description:
+        - "&7Locate an Ocean Monument."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: OCEAN_MONUMENT
+            display: "&3Ocean Monument"
+            amount: 1
+            searchRadius: 6
+            nearBlocks: 220
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 22000
+          - type: ITEM
+            material: SPONGE
+            amount: 8
+
+    - id: story_33_guardians
+      enabled: true
+      name: "&3[Story] Guardian Cleanup"
+      description:
+        - "&7Fight Guardians."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: GUARDIAN
+            display: "&3Guardian"
+            amount: 40
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 20000
+          - type: ITEM
+            material: SEA_LANTERN
+            amount: 16
+          - type: ITEM
+            material: PRISMARINE_SHARD
+            amount: 64
+
+    - id: story_34_deep_dark
+      enabled: true
+      name: "&8[Story] Deep Dark"
+      description:
+        - "&7Locate the Deep Dark."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: BIOME
+          target:
+            biome: DEEP_DARK
+            display: "&8Deep Dark"
+            amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 24000
+          - type: ITEM
+            material: ECHO_SHARD
+            amount: 4
+
+    - id: story_35_ancient_city
+      enabled: true
+      name: "&5[Story] Ancient City"
+      description:
+        - "&7Locate an Ancient City."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: ANCIENT_CITY
+            display: "&5Ancient City"
+            amount: 1
+            searchRadius: 6
+            nearBlocks: 220
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 26000
+          - type: ITEM
+            material: ECHO_SHARD
+            amount: 6
+
+    - id: story_36_warden
+      enabled: true
+      name: "&4[Story] Warden"
+      description:
+        - "&7Defeat the Warden."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: WARDEN
+            display: "&5Warden"
+            amount: 1
+      rewards:
+        mode: CHOICE
+        options:
+          - type: BUNDLE
+            name: "&5Relics"
+            rewards:
+              - type: XP
+                amount: 90000
+              - type: ITEM
+                material: ECHO_SHARD
+                amount: 12
+              - type: ITEM
+                material: DIAMOND_BLOCK
+                amount: 2
+          - type: BUNDLE
+            name: "&bXP Storm"
+            rewards:
+              - type: XP
+                amount: 120000
+              - type: ITEM
+                material: EXPERIENCE_BOTTLE
+                amount: 192
+
+    - id: story_37_deepslate_delivery
+      enabled: true
+      name: "&8[Story] Deepcore Shipment"
+      description:
+        - "&7Deliver mined stone."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: DEEPSLATE
+            display: "&8Deepslate"
+            amount: 3000
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 30000
+          - type: ITEM
+            material: DIAMOND
+            amount: 10
+
+    - id: story_38_shulker_delivery
+      enabled: true
+      name: "&d[Story] Shell Delivery"
+      description:
+        - "&7Deliver shells."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: SHULKER_SHELL
+            display: "&dShulker Shell"
+            amount: 16
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 42000
+          - type: ITEM
+            material: DIAMOND_BLOCK
+            amount: 1
+          - type: ITEM
+            material: ENCHANTED_GOLDEN_APPLE
+            amount: 2
+
+    - id: story_39_diamond_blocks
+      enabled: true
+      name: "&b[Story] Diamond Bank"
+      description:
+        - "&7Deliver diamond blocks."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: DIAMOND_BLOCK
+            display: "&bDiamond Block"
+            amount: 6
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 60000
+          - type: ITEM
+            material: NETHERITE_INGOT
+            amount: 1
+          - type: ITEM
+            material: ENCHANTED_GOLDEN_APPLE
+            amount: 3
+
+    - id: story_40_woodland_mansion
+      enabled: true
+      name: "&2[Story] Woodland Mansion"
+      description:
+        - "&7Locate a Woodland Mansion."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: STRUCTURE
+          target:
+            structure: WOODLAND_MANSION
+            display: "&2Woodland Mansion"
+            amount: 1
+            searchRadius: 7
+            nearBlocks: 260
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 35000
+          - type: ITEM
+            material: TOTEM_OF_UNDYING
+            amount: 1
+
+    - id: story_41_evokers
+      enabled: true
+      name: "&5[Story] Evoker Hunt"
+      description:
+        - "&7Defeat Evokers."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: EVOKER
+            display: "&5Evoker"
+            amount: 6
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 45000
+          - type: ITEM
+            material: TOTEM_OF_UNDYING
+            amount: 1
+          - type: ITEM
+            material: DIAMOND
+            amount: 8
+
+    - id: story_42_netherite_debris
+      enabled: true
+      name: "&6[Story] Ancient Debris"
+      description:
+        - "&7Collect ancient debris."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: ANCIENT_DEBRIS
+            display: "&6Ancient Debris"
+            amount: 10
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 50000
+          - type: ITEM
+            material: NETHERITE_SCRAP
             amount: 4
           - type: ITEM
-            material: EXPERIENCE_BOTTLE
-            amount: 48
+            material: DIAMOND
+            amount: 10
+
+    - id: story_43_scrap_delivery
+      enabled: true
+      name: "&6[Story] Scrap Delivery"
+      description:
+        - "&7Deliver netherite scrap."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: NETHERITE_SCRAP
+            display: "&6Netherite Scrap"
+            amount: 6
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 65000
+          - type: ITEM
+            material: NETHERITE_INGOT
+            amount: 1
+          - type: ITEM
+            material: ENCHANTED_GOLDEN_APPLE
+            amount: 2
+
+    - id: story_44_enderman_grind
+      enabled: true
+      name: "&5[Story] Void Harvest"
+      description:
+        - "&7Massive Enderman grind."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: ENDERMAN
+            display: "&5Enderman"
+            amount: 300
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 42000
+          - type: ITEM
+            material: ENDER_PEARL
+            amount: 64
+
+    - id: story_45_beacon_base
+      enabled: true
+      name: "&e[Story] Beacon Foundation"
+      description:
+        - "&7Deliver base blocks."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: IRON_BLOCK
+            display: "&fIron Block"
+            amount: 128
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 50000
+          - type: ITEM
+            material: DIAMOND_BLOCK
+            amount: 2
+
+    - id: story_46_second_wither
+      enabled: true
+      name: "&4[Story] Wither Again"
+      description:
+        - "&7Another Wither."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: WITHER
+            display: "&0Wither"
+            amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 80000
+          - type: ITEM
+            material: NETHER_STAR
+            amount: 1
+          - type: ITEM
+            material: NETHERITE_INGOT
+            amount: 1
+
+    - id: story_47_warden_again
+      enabled: true
+      name: "&4[Story] Warden Again"
+      description:
+        - "&7Another Warden."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: WARDEN
+            display: "&5Warden"
+            amount: 1
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 90000
+          - type: ITEM
+            material: ECHO_SHARD
+            amount: 10
+
+    - id: story_48_shulker_mass
+      enabled: true
+      name: "&d[Story] End City Mass"
+      description:
+        - "&7Heavy shulker grinding."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: SHULKER
+            display: "&dShulker"
+            amount: 80
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 65000
+          - type: ITEM
+            material: SHULKER_SHELL
+            amount: 32
+
+    - id: story_49_diamond_block_tradeoff
+      enabled: true
+      name: "&b[Story] The Sacrifice"
+      description:
+        - "&7Pay to prove endgame."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: DIAMOND_BLOCK
+            display: "&bDiamond Block"
+            amount: 10
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 120000
+          - type: ITEM
+            material: NETHERITE_INGOT
+            amount: 2
+
+    - id: story_50_final_grind_extreme
+      enabled: true
+      name: "&4&l[Story] THE FINAL GRIND"
+      description:
+        - "&7OP loot allowed. Final story quest."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: DELIVER
+          target:
+            material: DEEPSLATE
+            display: "&8Deepslate"
+            amount: 10000
+        - type: KILL_MOB
+          target:
+            entity: WARDEN
+            display: "&5Warden"
+            amount: 3
+        - type: KILL_MOB
+          target:
+            entity: WITHER
+            display: "&0Wither"
+            amount: 3
+        - type: KILL_MOB
+          target:
+            entity: SHULKER
+            display: "&dShulker"
+            amount: 100
+        - type: DELIVER
+          target:
+            material: DIAMOND_BLOCK
+            display: "&bDiamond Block"
+            amount: 10
+      rewards:
+        mode: CHOICE
+        options:
+          - type: BUNDLE
+            name: "&6&lLegendary Combat Bundle"
+            rewards:
+              - type: XP
+                amount: 150000
+              - type: ITEM
+                material: NETHERITE_INGOT
+                amount: 8
+              - type: ITEM
+                material: TOTEM_OF_UNDYING
+                amount: 3
+              - type: ITEM
+                material: ENCHANTED_GOLDEN_APPLE
+                amount: 8
+              - type: ITEM
+                material: NETHER_STAR
+                amount: 5
+          - type: BUNDLE
+            name: "&b&lLegendary Builder Bundle"
+            rewards:
+              - type: XP
+                amount: 150000
+              - type: ITEM
+                material: DIAMOND_BLOCK
+                amount: 16
+              - type: ITEM
+                material: QUARTZ_BLOCK
+                amount: 512
+              - type: ITEM
+                material: SEA_LANTERN
+                amount: 128
+              - type: ITEM
+                material: SHULKER_SHELL
+                amount: 64
