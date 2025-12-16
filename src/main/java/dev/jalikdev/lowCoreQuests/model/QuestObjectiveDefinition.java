@@ -18,8 +18,17 @@ public record QuestObjectiveDefinition(
 
         String displayName
 ) {
-    public static QuestObjectiveDefinition item(QuestType type, Material material, int required, String displayName) {
-        return new QuestObjectiveDefinition(type, required, material, null, null, null, 0, 0, displayName);
+
+    public static QuestObjectiveDefinition collect(Material material, int required, String displayName) {
+        return new QuestObjectiveDefinition(QuestType.COLLECT, required, material, null, null, null, 0, 0, displayName);
+    }
+
+    public static QuestObjectiveDefinition deliver(Material material, int required, String displayName) {
+        return new QuestObjectiveDefinition(QuestType.DELIVER, required, material, null, null, null, 0, 0, displayName);
+    }
+
+    public static QuestObjectiveDefinition breakBlock(Material material, int required, String displayName) {
+        return new QuestObjectiveDefinition(QuestType.BREAK, required, material, null, null, null, 0, 0, displayName);
     }
 
     public static QuestObjectiveDefinition biome(NamespacedKey biomeKey, int required, String displayName) {

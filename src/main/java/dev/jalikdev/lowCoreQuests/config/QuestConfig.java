@@ -12,7 +12,6 @@ import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
-import org.bukkit.generator.structure.Structure;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +58,6 @@ public class QuestConfig {
             for (String id : root.getKeys(false)) {
                 ConfigurationSection q = root.getConfigurationSection(id);
                 if (q == null) continue;
-
                 QuestDefinition def = parseQuest(id, q);
                 if (def != null) map.put(id, def);
             }
@@ -102,11 +100,15 @@ public class QuestConfig {
             int amount = Math.max(1, intVal(target.get("amount"), 1));
             String display = target.get("display") == null ? null : String.valueOf(target.get("display"));
 
-            if (type == QuestType.DELIVER || type == QuestType.COLLECT) {
+            if (type == QuestType.DELIVER || type == QuestType.COLLECT || type == QuestType.BREAK) {
                 String matName = target.get("material") == null ? "STONE" : String.valueOf(target.get("material"));
                 Material mat = Material.matchMaterial(matName);
                 if (mat == null) continue;
-                out.add(QuestObjectiveDefinition.item(type, mat, amount, display));
+
+                if (type == QuestType.COLLECT) out.add(QuestObjectiveDefinition.collect(mat, amount, display));
+                else if (type == QuestType.DELIVER) out.add(QuestObjectiveDefinition.deliver(mat, amount, display));
+                else out.add(QuestObjectiveDefinition.breakBlock(mat, amount, display));
+
                 continue;
             }
 
@@ -129,7 +131,6 @@ public class QuestConfig {
 
             if (type == QuestType.STRUCTURE) {
                 String s = target.get("structure") == null ? "village" : String.valueOf(target.get("structure"));
-
                 NamespacedKey key = keyFrom(s);
                 if (Registry.STRUCTURE.get(key) == null) continue;
 

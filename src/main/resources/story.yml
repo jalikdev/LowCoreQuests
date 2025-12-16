@@ -602,7 +602,7 @@ story:
       difficulty: HARD
       completion: ALL
       objectives:
-        - type: COLLECT
+        - type: BREAK
           target:
             material: DEEPSLATE
             display: "&8Deepslate"

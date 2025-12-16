@@ -125,11 +125,15 @@ public class StoryConfig {
             int amount = Math.max(1, intVal(target.get("amount"), 1));
             String display = target.get("display") == null ? null : String.valueOf(target.get("display"));
 
-            if (type == QuestType.DELIVER || type == QuestType.COLLECT) {
+            if (type == QuestType.DELIVER || type == QuestType.COLLECT || type == QuestType.BREAK) {
                 String matName = target.get("material") == null ? "STONE" : String.valueOf(target.get("material"));
                 Material mat = Material.matchMaterial(matName);
                 if (mat == null) continue;
-                out.add(QuestObjectiveDefinition.item(type, mat, amount, display));
+
+                if (type == QuestType.COLLECT) out.add(QuestObjectiveDefinition.collect(mat, amount, display));
+                else if (type == QuestType.DELIVER) out.add(QuestObjectiveDefinition.deliver(mat, amount, display));
+                else out.add(QuestObjectiveDefinition.breakBlock(mat, amount, display));
+
                 continue;
             }
 

@@ -4,6 +4,7 @@ import dev.jalikdev.lowCoreQuests.service.QuestService;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -24,6 +25,11 @@ public class QuestProgressListener implements Listener {
         Player killer = e.getEntity().getKiller();
         if (killer == null) return;
         service.handleKill(killer, e.getEntityType());
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent e) {
+        service.handleBreak(e.getPlayer(), e.getBlock().getType());
     }
 
     @EventHandler
@@ -52,8 +58,7 @@ public class QuestProgressListener implements Listener {
 
     @EventHandler
     public void onFurnace(FurnaceExtractEvent e) {
-        Player player = e.getPlayer();
-        service.syncCollectProgress(player);
+        service.syncCollectProgress(e.getPlayer());
     }
 
     @EventHandler

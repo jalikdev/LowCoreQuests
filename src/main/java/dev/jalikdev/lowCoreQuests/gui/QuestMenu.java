@@ -120,6 +120,7 @@ public class QuestMenu {
             case KILL_MOB -> "Kill " + base;
             case DELIVER -> "Deliver " + base;
             case COLLECT -> "Collect " + base;
+            case BREAK -> "Break " + base;
             case STRUCTURE -> "Find " + base;
         };
     }

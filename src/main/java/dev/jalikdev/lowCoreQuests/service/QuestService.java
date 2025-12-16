@@ -197,6 +197,18 @@ public class QuestService {
         }
     }
 
+    public void handleBreak(Player player, org.bukkit.Material broken) {
+        UUID uuid = player.getUniqueId();
+        QuestDefinition def = getActiveQuestDefinition(uuid);
+        if (def == null) return;
+
+        for (int i = 0; i < def.objectives().size(); i++) {
+            QuestObjectiveDefinition obj = def.objectives().get(i);
+            if (obj.type() != QuestType.BREAK) continue;
+            if (obj.material() == broken) addProgress(player, i, 1);
+        }
+    }
+
     public void handleBiome(Player player, Biome biome) {
         UUID uuid = player.getUniqueId();
         QuestDefinition def = getActiveQuestDefinition(uuid);
@@ -423,4 +435,3 @@ public class QuestService {
         });
     }
 }
-

@@ -228,7 +228,7 @@ quests:
     difficulty: EASY
     completion: ALL
     objectives:
-      - type: COLLECT
+      - type: BREAK
         target:
           material: NETHERRACK
           display: "&cNetherrack"
