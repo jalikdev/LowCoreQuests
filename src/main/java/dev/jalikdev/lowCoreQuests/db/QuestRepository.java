@@ -65,9 +65,7 @@ public class QuestRepository {
             ps.setString(2, questId);
 
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    map.put(rs.getInt("idx"), rs.getInt("progress"));
-                }
+                while (rs.next()) map.put(rs.getInt("idx"), rs.getInt("progress"));
             }
 
         } catch (SQLException e) {

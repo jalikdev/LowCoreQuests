@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ public interface Reward {
     String display();
     void give(Player player);
 
-    public static Reward fromMap(Map<?, ?> map) {
+    static Reward fromMap(Map<?, ?> map) {
         Object t = map.get("type");
         if (t == null) return null;
 
@@ -40,9 +42,27 @@ public interface Reward {
             return new ItemReward(mat, amount);
         }
 
+        if (type.equals("BUNDLE")) {
+            Object nameObj = map.get("name");
+            String name = nameObj == null ? "&fReward Bundle" : String.valueOf(nameObj);
+
+            Object rewardsObj = map.get("rewards");
+            if (!(rewardsObj instanceof List<?> list)) return null;
+
+            List<Reward> rewards = new ArrayList<>();
+            for (Object entry : list) {
+                if (entry instanceof Map<?, ?> child) {
+                    Reward r = Reward.fromMap(child);
+                    if (r != null) rewards.add(r);
+                }
+            }
+
+            if (rewards.isEmpty()) return null;
+            return new BundleReward(name, rewards);
+        }
+
         return null;
     }
-
 
     private static int intVal(Object o, int def) {
         if (o == null) return def;
@@ -67,5 +87,12 @@ public interface Reward {
     record ItemReward(Material material, int amount) implements Reward {
         @Override public String display() { return amount + "x " + material.name(); }
         @Override public void give(Player player) { player.getInventory().addItem(new ItemStack(material, amount)); }
+    }
+
+    record BundleReward(String name, List<Reward> rewards) implements Reward {
+        @Override public String display() { return name; }
+        @Override public void give(Player player) {
+            for (Reward r : rewards) r.give(player);
+        }
     }
 }

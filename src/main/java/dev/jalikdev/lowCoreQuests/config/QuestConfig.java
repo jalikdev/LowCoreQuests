@@ -37,7 +37,6 @@ public class QuestConfig {
 
     public void ensureQuestsFileInLowCoreFolder() {
         if (!core.getDataFolder().exists()) core.getDataFolder().mkdirs();
-
         File file = questsFile();
         if (file.exists()) return;
 
@@ -60,60 +59,53 @@ public class QuestConfig {
                 ConfigurationSection q = root.getConfigurationSection(id);
                 if (q == null) continue;
 
-                boolean enabled = q.getBoolean("enabled", true);
-                String name = q.getString("name", id);
-                List<String> description = q.getStringList("description");
-
-                Difficulty difficulty;
-                try {
-                    difficulty = Difficulty.valueOf(q.getString("difficulty", "EASY").toUpperCase(Locale.ROOT));
-                } catch (Exception e) {
-                    difficulty = Difficulty.EASY;
-                }
-
-                QuestCompletionMode mode;
-                try {
-                    mode = QuestCompletionMode.valueOf(q.getString("completion", "ALL").toUpperCase(Locale.ROOT));
-                } catch (Exception e) {
-                    mode = QuestCompletionMode.ALL;
-                }
-
-                List<QuestObjectiveDefinition> objectives = parseObjectives(q.getMapList("objectives"));
-                if (objectives.isEmpty()) continue;
-
-                RewardBundle rewards = parseRewards(q.getConfigurationSection("rewards"));
-
-                map.put(id, new QuestDefinition(id, enabled, name, description, difficulty, mode, objectives, rewards));
+                QuestDefinition def = parseQuest(id, q);
+                if (def != null) map.put(id, def);
             }
         }
 
         this.quests = map;
     }
 
+    private QuestDefinition parseQuest(String id, ConfigurationSection q) {
+        boolean enabled = q.getBoolean("enabled", true);
+        String name = q.getString("name", id);
+        List<String> description = q.getStringList("description");
+
+        Difficulty difficulty;
+        try { difficulty = Difficulty.valueOf(q.getString("difficulty", "EASY").toUpperCase(Locale.ROOT)); }
+        catch (Exception e) { difficulty = Difficulty.EASY; }
+
+        QuestCompletionMode completionMode = QuestCompletionMode.ALL;
+
+        List<QuestObjectiveDefinition> objectives = parseObjectives(q.getMapList("objectives"));
+        if (objectives.isEmpty()) return null;
+
+        RewardBundle rewards = parseRewards(q.getConfigurationSection("rewards"));
+
+        return new QuestDefinition(id, enabled, name, description, difficulty, completionMode, objectives, rewards);
+    }
+
     private List<QuestObjectiveDefinition> parseObjectives(List<Map<?, ?>> rawList) {
         List<QuestObjectiveDefinition> out = new ArrayList<>();
+
         for (Map<?, ?> raw : rawList) {
             Object t = raw.get("type");
             Object targetObj = raw.get("target");
             if (t == null || !(targetObj instanceof Map<?, ?> target)) continue;
 
-            String typeStr = String.valueOf(t).toUpperCase(Locale.ROOT);
             QuestType type;
-            try {
-                type = QuestType.valueOf(typeStr);
-            } catch (Exception e) {
-                continue;
-            }
+            try { type = QuestType.valueOf(String.valueOf(t).toUpperCase(Locale.ROOT)); }
+            catch (Exception e) { continue; }
 
-            int amount = intVal(target.get("amount"), 1);
-            amount = Math.max(1, amount);
+            int amount = Math.max(1, intVal(target.get("amount"), 1));
             String display = target.get("display") == null ? null : String.valueOf(target.get("display"));
 
-            if (type == QuestType.ITEM) {
+            if (type == QuestType.DELIVER || type == QuestType.COLLECT) {
                 String matName = target.get("material") == null ? "STONE" : String.valueOf(target.get("material"));
                 Material mat = Material.matchMaterial(matName);
                 if (mat == null) continue;
-                out.add(QuestObjectiveDefinition.item(mat, amount, display));
+                out.add(QuestObjectiveDefinition.item(type, mat, amount, display));
                 continue;
             }
 
@@ -128,14 +120,12 @@ public class QuestConfig {
             if (type == QuestType.KILL_MOB) {
                 String ent = target.get("entity") == null ? "ZOMBIE" : String.valueOf(target.get("entity"));
                 EntityType entity;
-                try {
-                    entity = EntityType.valueOf(ent.toUpperCase(Locale.ROOT));
-                } catch (Exception e) {
-                    continue;
-                }
+                try { entity = EntityType.valueOf(ent.toUpperCase(Locale.ROOT)); }
+                catch (Exception e) { continue; }
                 out.add(QuestObjectiveDefinition.kill(entity, amount, display));
             }
         }
+
         return out;
     }
 
@@ -143,16 +133,6 @@ public class QuestConfig {
         if (o == null) return def;
         if (o instanceof Number n) return n.intValue();
         try { return Integer.parseInt(String.valueOf(o)); } catch (Exception e) { return def; }
-    }
-
-    public QuestDefinition get(String id) {
-        return quests.get(id);
-    }
-
-    public Collection<QuestDefinition> enabledQuests() {
-        List<QuestDefinition> out = new ArrayList<>();
-        for (QuestDefinition q : quests.values()) if (q.enabled()) out.add(q);
-        return out;
     }
 
     private RewardBundle parseRewards(ConfigurationSection sec) {
@@ -170,5 +150,15 @@ public class QuestConfig {
         }
 
         return new RewardBundle(mode, options);
+    }
+
+    public QuestDefinition get(String id) {
+        return quests.get(id);
+    }
+
+    public Collection<QuestDefinition> enabledQuests() {
+        List<QuestDefinition> out = new ArrayList<>();
+        for (QuestDefinition q : quests.values()) if (q.enabled()) out.add(q);
+        return out;
     }
 }

@@ -10,7 +10,6 @@ import dev.jalikdev.lowCoreQuests.util.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,45 +24,70 @@ import java.util.UUID;
 public class QuestMenu {
 
     public static final String TITLE = "LowCore Quests";
-
     public static final NamespacedKey KEY_ACTION = new NamespacedKey("lowcorequests", "lcq_action");
-    public static final NamespacedKey KEY_QUEST = new NamespacedKey("lowcorequests", "lcq_quest");
 
     public static Inventory build(LowCore core, QuestService service, Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, Text.c("&a" + TITLE));
-
         fill(inv);
 
-        inv.setItem(4, item(Material.BOOK, "&fQuest Menu", List.of("&7One active quest at a time")));
+        inv.setItem(4, item(Material.BOOK, "&fQuest Menu", List.of("&7Story + Random quests")));
         inv.setItem(49, item(Material.BARRIER, "&cClose", List.of("&7Click to close")));
+
+        var stats = service.getStats(player.getUniqueId());
+        inv.setItem(6, item(Material.CLOCK, "&fQuest Stats", List.of(
+                Text.c("&7Completed: &f" + stats.total()),
+                Text.c("&7Story: &f" + stats.story()),
+                Text.c("&7Random: &f" + stats.random())
+        )));
 
         PlayerQuestState st = service.getActive(player.getUniqueId());
 
         if (st == null) {
-            inv.setItem(22, item(Material.PAPER, "&fNo active quest", List.of("&7You get a random quest")));
-            inv.setItem(31, action(Material.LIME_CONCRETE, "&aGet Random Quest", "random", null));
+            QuestDefinition nextStory = service.getNextStory(player.getUniqueId());
+
+            List<String> info = new ArrayList<>();
+            if (nextStory == null) {
+                info.add(Text.c("&7No more story quests."));
+            } else {
+                info.add(Text.c("&7Next Story:"));
+                info.add(Text.c("&f" + nextStory.name()));
+                info.add(Text.c("&7Difficulty: &f" + nextStory.difficulty()));
+            }
+
+            inv.setItem(22, item(Material.PAPER, "&fNo active quest", info));
+
+            inv.setItem(20, action(Material.WRITABLE_BOOK, "&aStory Quest", "story"));
+            inv.setItem(24, action(Material.COMPASS, "&eRandom Quest", "random"));
+
             return inv;
         }
 
-        QuestDefinition q = service.getQuest(st.questId());
+        service.syncCollectProgress(player);
+
+        QuestDefinition q = service.getQuestById(st.questId());
         if (q == null) {
             inv.setItem(22, item(Material.BARRIER, "&cActive quest missing", List.of("&7Cancel it")));
-            inv.setItem(31, action(Material.BARRIER, "&cCancel", "cancel", null));
+            inv.setItem(31, action(Material.BARRIER, "&cCancel", "cancel"));
             return inv;
         }
 
-        inv.setItem(22, activeQuestItem(service, player.getUniqueId(), q, st));
+        inv.setItem(22, activeQuestItem(service, player.getUniqueId(), q));
 
-        inv.setItem(29, action(Material.BARRIER, "&cCancel", "cancel", null));
-        inv.setItem(31, action(Material.LIME_CONCRETE, "&aComplete", "complete", null));
-        inv.setItem(33, action(Material.CHEST, "&eTurn in items", "turnin", null));
+        inv.setItem(29, action(Material.BARRIER, "&cCancel", "cancel"));
+        inv.setItem(31, action(Material.LIME_CONCRETE, "&aComplete", "complete"));
+
+        boolean hasDeliver = q.objectives().stream().anyMatch(o -> o.type() == QuestType.DELIVER);
+        if (hasDeliver) {
+            inv.setItem(33, action(Material.CHEST, "&eTurn in items", "turnin"));
+        } else {
+            inv.setItem(33, item(Material.GRAY_DYE, "&7Turn in items", List.of("&7This quest has no DELIVER objectives")));
+        }
 
         return inv;
     }
 
-    private static ItemStack activeQuestItem(QuestService service, UUID uuid, QuestDefinition q, PlayerQuestState st) {
+    private static ItemStack activeQuestItem(QuestService service, UUID uuid, QuestDefinition q) {
         List<String> lore = new ArrayList<>();
-
         lore.add(Text.c("&7Difficulty: &f" + q.difficulty()));
         lore.add(" ");
 
@@ -75,16 +99,8 @@ public class QuestMenu {
             lore.add(Text.c("&7- &f" + objectiveLine(obj) + " &7(&f" + cur + "&7/&f" + obj.required() + "&7)"));
         }
 
-        boolean done = true;
-        for (int i = 0; i < q.objectives().size(); i++) {
-            if (prog.getOrDefault(i, 0) < q.objectives().get(i).required()) {
-                done = false;
-                break;
-            }
-        }
-
         lore.add(" ");
-        lore.add(Text.c(done ? "&aReady to complete" : "&eIn progress"));
+        lore.add(Text.c("&7Status: " + (service.canComplete(Bukkit.getPlayer(uuid)) ? "&aReady" : "&eIn progress")));
 
         if (q.description() != null && !q.description().isEmpty()) {
             lore.add(" ");
@@ -96,23 +112,27 @@ public class QuestMenu {
 
     private static String objectiveLine(QuestObjectiveDefinition obj) {
         String disp = obj.displayName();
-        if (disp != null && !disp.isBlank()) {
-            if (obj.type() == QuestType.BIOME) return "Enter " + Text.c(disp);
-            return Text.c(disp);
-        }
+        String base = (disp != null && !disp.isBlank()) ? Text.c(disp) : fallbackName(obj);
 
-        if (obj.type() == QuestType.ITEM) return obj.material().name();
-        if (obj.type() == QuestType.KILL_MOB) return obj.entityType().name();
-        if (obj.type() == QuestType.BIOME) return "Enter " + obj.biomeKey().getKey();
-        return "Unknown";
+        return switch (obj.type()) {
+            case BIOME -> "Enter " + base;
+            case KILL_MOB -> "Kill " + base;
+            case DELIVER -> "Deliver " + base;
+            case COLLECT -> "Collect " + base;
+        };
     }
 
-    private static ItemStack action(Material mat, String name, String action, String questId) {
+    private static String fallbackName(QuestObjectiveDefinition obj) {
+        if (obj.type() == QuestType.BIOME) return obj.biomeKey().getKey();
+        if (obj.type() == QuestType.KILL_MOB) return obj.entityType().name();
+        return obj.material().name();
+    }
+
+    private static ItemStack action(Material mat, String name, String action) {
         ItemStack it = new ItemStack(mat);
         ItemMeta meta = it.getItemMeta();
         meta.setDisplayName(Text.c(name));
         meta.getPersistentDataContainer().set(KEY_ACTION, PersistentDataType.STRING, action);
-        if (questId != null) meta.getPersistentDataContainer().set(KEY_QUEST, PersistentDataType.STRING, questId);
         it.setItemMeta(meta);
         return it;
     }

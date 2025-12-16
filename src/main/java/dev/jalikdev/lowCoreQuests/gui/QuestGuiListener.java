@@ -2,7 +2,6 @@ package dev.jalikdev.lowCoreQuests.gui;
 
 import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.service.QuestService;
-import dev.jalikdev.lowCoreQuests.util.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,42 +54,41 @@ public class QuestGuiListener implements Listener {
         String action = meta.getPersistentDataContainer().get(QuestMenu.KEY_ACTION, PersistentDataType.STRING);
         if (action == null) return;
 
-        if (action.equals("random")) {
-            var def = service.startRandom(player);
-            if (def == null) {
-                player.sendMessage(core.getPrefix() + "You already have a quest.");
-            } else {
-                player.sendMessage(core.getPrefix() + "Random quest started: " + Text.c(def.name()));
+        switch (action) {
+            case "story" -> {
+                var def = service.startNextStory(player);
+                if (def == null) player.sendMessage(core.getPrefix() + "No story quest available or you already have a quest.");
+                else player.sendMessage(core.getPrefix() + "Story quest started: " + ChatColor.stripColor(def.name()));
+                player.openInventory(QuestMenu.build(core, service, player));
             }
-            player.openInventory(QuestMenu.build(core, service, player));
-            return;
-        }
-
-        if (action.equals("cancel")) {
-            boolean ok = service.cancel(player);
-            player.sendMessage(core.getPrefix() + (ok ? "Quest cancelled." : "No active quest."));
-            player.openInventory(QuestMenu.build(core, service, player));
-            return;
-        }
-
-        if (action.equals("turnin")) {
-            int added = service.turnInItems(player);
-            player.sendMessage(core.getPrefix() + (added > 0 ? ("Turned in " + added + " items.") : "No items to turn in."));
-            player.openInventory(QuestMenu.build(core, service, player));
-            return;
-        }
-
-        if (action.equals("complete")) {
-            if (!service.canComplete(player)) {
-                player.sendMessage(core.getPrefix() + "Not complete yet.");
-                return;
+            case "random" -> {
+                var def = service.startRandom(player);
+                if (def == null) player.sendMessage(core.getPrefix() + "No random quest available or you already have a quest.");
+                else player.sendMessage(core.getPrefix() + "Random quest started: " + ChatColor.stripColor(def.name()));
+                player.openInventory(QuestMenu.build(core, service, player));
             }
-            service.completeOrOpenRewards(player);
+            case "cancel" -> {
+                boolean ok = service.cancel(player);
+                player.sendMessage(core.getPrefix() + (ok ? "Quest cancelled." : "No active quest."));
+                player.openInventory(QuestMenu.build(core, service, player));
+            }
+            case "turnin" -> {
+                int added = service.turnInItems(player);
+                player.sendMessage(core.getPrefix() + (added > 0 ? ("Turned in " + added + " items.") : "No items to turn in."));
+                player.openInventory(QuestMenu.build(core, service, player));
+            }
+            case "complete" -> {
+                if (!service.canComplete(player)) {
+                    player.sendMessage(core.getPrefix() + "Not complete yet.");
+                    return;
+                }
+                service.completeOrOpenRewards(player);
 
-            String now = ChatColor.stripColor(player.getOpenInventory().getTitle());
-            if (now != null && now.equalsIgnoreCase(RewardMenu.TITLE)) return;
+                String now = ChatColor.stripColor(player.getOpenInventory().getTitle());
+                if (now != null && now.equalsIgnoreCase(RewardMenu.TITLE)) return;
 
-            player.openInventory(QuestMenu.build(core, service, player));
+                player.openInventory(QuestMenu.build(core, service, player));
+            }
         }
     }
 }

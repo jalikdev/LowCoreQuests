@@ -12,8 +12,8 @@ public record QuestObjectiveDefinition(
         EntityType entityType,
         String displayName
 ) {
-    public static QuestObjectiveDefinition item(Material material, int required, String displayName) {
-        return new QuestObjectiveDefinition(QuestType.ITEM, required, material, null, null, displayName);
+    public static QuestObjectiveDefinition item(QuestType type, Material material, int required, String displayName) {
+        return new QuestObjectiveDefinition(type, required, material, null, null, displayName);
     }
 
     public static QuestObjectiveDefinition biome(NamespacedKey biomeKey, int required, String displayName) {

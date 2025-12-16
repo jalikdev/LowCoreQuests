@@ -1,0 +1,123 @@
+story:
+  enabled: true
+
+  line:
+    - id: story_01_get_wood
+      enabled: true
+      name: "&aStory I: Getting Wood"
+      description:
+        - "&7Punch trees and get logs."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: OAK_LOG
+            display: "&6Oak Logs"
+            amount: 16
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 150
+
+    - id: story_02_stone_age
+      enabled: true
+      name: "&aStory II: Stone Age"
+      description:
+        - "&7Mine cobblestone for tools."
+      difficulty: EASY
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: COBBLESTONE
+            display: "&7Cobblestone"
+            amount: 32
+      rewards:
+        mode: ALL
+        options:
+          - type: ITEM
+            material: TORCH
+            amount: 16
+
+    - id: story_03_iron_ready
+      enabled: true
+      name: "&eStory III: Iron Ready"
+      description:
+        - "&7Collect iron to upgrade."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: COLLECT
+          target:
+            material: IRON_INGOT
+            display: "&fIron Ingot"
+            amount: 24
+        - type: KILL_MOB
+          target:
+            entity: ZOMBIE
+            display: "&2Zombie"
+            amount: 10
+      rewards:
+        mode: CHOICE
+        options:
+          - type: XP
+            amount: 900
+          - type: ITEM
+            material: IRON_PICKAXE
+            amount: 1
+
+    - id: story_04_first_nether
+      enabled: true
+      name: "&cStory IV: First Nether Step"
+      description:
+        - "&7Enter the Nether and survive."
+      difficulty: MEDIUM
+      completion: ALL
+      objectives:
+        - type: BIOME
+          target:
+            biome: NETHER_WASTES
+            display: "&cNether Wastes"
+            amount: 1
+        - type: COLLECT
+          target:
+            material: GOLD_INGOT
+            display: "&6Gold Ingot"
+            amount: 8
+      rewards:
+        mode: ALL
+        options:
+          - type: XP
+            amount: 1400
+
+    - id: story_05_fortress_run
+      enabled: true
+      name: "&4Story V: Fortress Run"
+      description:
+        - "&7Get blaze rods (do not turn in)."
+      difficulty: HARD
+      completion: ALL
+      objectives:
+        - type: KILL_MOB
+          target:
+            entity: BLAZE
+            display: "&6Blaze"
+            amount: 12
+        - type: COLLECT
+          target:
+            material: BLAZE_ROD
+            display: "&6Blaze Rod"
+            amount: 8
+      rewards:
+        mode: CHOICE
+        options:
+          - type: XP
+            amount: 3500
+          - type: ITEM
+            material: GOLDEN_APPLE
+            amount: 4
+          - type: ITEM
+            material: EXPERIENCE_BOTTLE
+            amount: 48

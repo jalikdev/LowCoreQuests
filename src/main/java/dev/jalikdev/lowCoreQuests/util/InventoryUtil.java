@@ -6,6 +6,15 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryUtil {
 
+    public static int count(Player player, Material mat) {
+        if (mat == null) return 0;
+        int total = 0;
+        for (ItemStack it : player.getInventory().getContents()) {
+            if (it != null && it.getType() == mat) total += it.getAmount();
+        }
+        return total;
+    }
+
     public static int remove(Player player, Material mat, int max) {
         if (mat == null || max <= 0) return 0;
 

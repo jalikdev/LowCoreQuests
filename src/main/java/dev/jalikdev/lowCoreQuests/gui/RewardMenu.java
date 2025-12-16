@@ -1,6 +1,5 @@
 package dev.jalikdev.lowCoreQuests.gui;
 
-import dev.jalikdev.lowCore.LowCore;
 import dev.jalikdev.lowCoreQuests.model.QuestDefinition;
 import dev.jalikdev.lowCoreQuests.reward.Reward;
 import dev.jalikdev.lowCoreQuests.util.Text;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RewardMenu {
@@ -21,9 +21,8 @@ public class RewardMenu {
     public static final NamespacedKey KEY_REWARD_INDEX = new NamespacedKey("lowcorequests", "lcq_reward_idx");
     public static final NamespacedKey KEY_QUEST_ID = new NamespacedKey("lowcorequests", "lcq_reward_qid");
 
-    public static Inventory build(LowCore core, QuestDefinition def) {
+    public static Inventory build(QuestDefinition def) {
         Inventory inv = Bukkit.createInventory(null, 27, Text.c("&a" + TITLE));
-
         fill(inv);
 
         List<Reward> opts = def.rewards().options();
@@ -35,8 +34,28 @@ public class RewardMenu {
 
             ItemStack it = icon(r);
             ItemMeta meta = it.getItemMeta();
+
             meta.setDisplayName(Text.c("&f" + r.display()));
-            meta.setLore(List.of(Text.c("&7Pick exactly one"), Text.c("&aClick to claim")));
+
+            List<String> lore = new ArrayList<>();
+            lore.add(Text.c("&7Pick exactly one"));
+            lore.add(" ");
+
+            if (r instanceof Reward.BundleReward br) {
+                lore.add(Text.c("&7Contains:"));
+                int shown = 0;
+                for (Reward inside : br.rewards()) {
+                    lore.add(Text.c("&f- &7" + inside.display()));
+                    shown++;
+                    if (shown >= 6) break;
+                }
+                if (br.rewards().size() > 6) lore.add(Text.c("&7..."));
+                lore.add(" ");
+            }
+
+            lore.add(Text.c("&aClick to claim"));
+            meta.setLore(lore);
+
             meta.getPersistentDataContainer().set(KEY_REWARD_INDEX, PersistentDataType.INTEGER, i);
             meta.getPersistentDataContainer().set(KEY_QUEST_ID, PersistentDataType.STRING, def.id());
             it.setItemMeta(meta);
@@ -60,10 +79,10 @@ public class RewardMenu {
     }
 
     private static ItemStack icon(Reward r) {
-        String d = r.display().toUpperCase();
-        if (d.contains("XP")) return new ItemStack(Material.EXPERIENCE_BOTTLE);
-        if (d.contains("COMMAND")) return new ItemStack(Material.COMMAND_BLOCK);
-        if (d.contains("X ")) return new ItemStack(Material.CHEST);
+        if (r instanceof Reward.XpReward) return new ItemStack(Material.EXPERIENCE_BOTTLE);
+        if (r instanceof Reward.ItemReward) return new ItemStack(Material.CHEST);
+        if (r instanceof Reward.CommandReward) return new ItemStack(Material.COMMAND_BLOCK);
+        if (r instanceof Reward.BundleReward) return new ItemStack(Material.BUNDLE);
         return new ItemStack(Material.CHEST);
     }
 
@@ -72,7 +91,7 @@ public class RewardMenu {
         ItemMeta m = glass.getItemMeta();
         m.setDisplayName(" ");
         glass.setItemMeta(m);
-
         for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, glass);
     }
 }
+

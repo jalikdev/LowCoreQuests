@@ -1,5 +1,8 @@
 package dev.jalikdev.lowCoreQuests.model;
 
 public enum QuestType {
-    ITEM, BIOME, KILL_MOB
+    DELIVER,
+    COLLECT,
+    BIOME,
+    KILL_MOB
 }
