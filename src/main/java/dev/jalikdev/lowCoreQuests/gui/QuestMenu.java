@@ -100,7 +100,8 @@ public class QuestMenu {
         }
 
         lore.add(" ");
-        lore.add(Text.c("&7Status: " + (service.canComplete(Bukkit.getPlayer(uuid)) ? "&aReady" : "&eIn progress")));
+        Player p = Bukkit.getPlayer(uuid);
+        lore.add(Text.c("&7Status: " + ((p != null && service.canComplete(p)) ? "&aReady" : "&eIn progress")));
 
         if (q.description() != null && !q.description().isEmpty()) {
             lore.add(" ");
@@ -119,12 +120,14 @@ public class QuestMenu {
             case KILL_MOB -> "Kill " + base;
             case DELIVER -> "Deliver " + base;
             case COLLECT -> "Collect " + base;
+            case STRUCTURE -> "Find " + base;
         };
     }
 
     private static String fallbackName(QuestObjectiveDefinition obj) {
         if (obj.type() == QuestType.BIOME) return obj.biomeKey().getKey();
         if (obj.type() == QuestType.KILL_MOB) return obj.entityType().name();
+        if (obj.type() == QuestType.STRUCTURE) return obj.structureKey().getKey();
         return obj.material().name();
     }
 

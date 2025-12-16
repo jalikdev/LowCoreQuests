@@ -9,7 +9,6 @@ import dev.jalikdev.lowCoreQuests.reward.RewardMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
@@ -97,21 +96,11 @@ public class StoryConfig {
         this.indexById = idxMap;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
+    public boolean isEnabled() { return enabled; }
 
-    public boolean isStoryQuest(String id) {
-        return indexById.containsKey(id);
-    }
+    public boolean isStoryQuest(String id) { return indexById.containsKey(id); }
 
-    public int getStoryIndex(String id) {
-        return indexById.getOrDefault(id, -1);
-    }
-
-    public int totalStoryQuests() {
-        return line.size();
-    }
+    public int getStoryIndex(String id) { return indexById.getOrDefault(id, -1); }
 
     public QuestDefinition getNextByCompletedIndex(int completedIndex) {
         if (!enabled) return null;
@@ -145,8 +134,8 @@ public class StoryConfig {
             }
 
             if (type == QuestType.BIOME) {
-                String biome = target.get("biome") == null ? "PLAINS" : String.valueOf(target.get("biome"));
-                NamespacedKey key = NamespacedKey.minecraft(biome.toLowerCase(Locale.ROOT));
+                String biome = target.get("biome") == null ? "plains" : String.valueOf(target.get("biome"));
+                NamespacedKey key = keyFrom(biome);
                 if (Registry.BIOME.get(key) == null) continue;
                 out.add(QuestObjectiveDefinition.biome(key, amount, display));
                 continue;
@@ -158,6 +147,18 @@ public class StoryConfig {
                 try { entity = EntityType.valueOf(ent.toUpperCase(Locale.ROOT)); }
                 catch (Exception e) { continue; }
                 out.add(QuestObjectiveDefinition.kill(entity, amount, display));
+                continue;
+            }
+
+            if (type == QuestType.STRUCTURE) {
+                String s = target.get("structure") == null ? "village" : String.valueOf(target.get("structure"));
+                NamespacedKey key = keyFrom(s);
+                if (Registry.STRUCTURE.get(key) == null) continue;
+
+                int searchRadius = clamp(intVal(target.get("searchRadius"), 2), 1, 8);
+                int nearBlocks = clamp(intVal(target.get("nearBlocks"), 80), 16, 512);
+
+                out.add(QuestObjectiveDefinition.structure(key, amount, searchRadius, nearBlocks, display));
             }
         }
 
@@ -182,15 +183,24 @@ public class StoryConfig {
         return new RewardBundle(mode, options);
     }
 
+    private static NamespacedKey keyFrom(String s) {
+        if (s == null) return NamespacedKey.minecraft("village");
+        String v = s.trim().toLowerCase(Locale.ROOT);
+        if (v.contains(":")) return NamespacedKey.fromString(v);
+        return NamespacedKey.minecraft(v);
+    }
+
+    private static int clamp(int v, int min, int max) {
+        return Math.max(min, Math.min(max, v));
+    }
+
     private static int intVal(Object o, int def) {
         if (o == null) return def;
         if (o instanceof Number n) return n.intValue();
         try { return Integer.parseInt(String.valueOf(o)); } catch (Exception e) { return def; }
     }
 
-    private static String str(Object o) {
-        return o == null ? null : String.valueOf(o);
-    }
+    private static String str(Object o) { return o == null ? null : String.valueOf(o); }
 
     private static boolean bool(Object o, boolean def) {
         if (o == null) return def;

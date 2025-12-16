@@ -8,8 +8,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class QuestProgressListener implements Listener {
 
@@ -35,6 +35,7 @@ public class QuestProgressListener implements Listener {
                 && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
 
         service.handleBiome(e.getPlayer(), e.getTo().getBlock().getBiome());
+        service.handleStructure(e.getPlayer());
     }
 
     @EventHandler

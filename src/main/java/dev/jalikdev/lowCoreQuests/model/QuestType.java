@@ -4,5 +4,6 @@ public enum QuestType {
     DELIVER,
     COLLECT,
     BIOME,
-    KILL_MOB
+    KILL_MOB,
+    STRUCTURE
 }

@@ -7,20 +7,30 @@ import org.bukkit.entity.EntityType;
 public record QuestObjectiveDefinition(
         QuestType type,
         int required,
+
         Material material,
         NamespacedKey biomeKey,
         EntityType entityType,
+
+        NamespacedKey structureKey,
+        int searchRadius,
+        int nearBlocks,
+
         String displayName
 ) {
     public static QuestObjectiveDefinition item(QuestType type, Material material, int required, String displayName) {
-        return new QuestObjectiveDefinition(type, required, material, null, null, displayName);
+        return new QuestObjectiveDefinition(type, required, material, null, null, null, 0, 0, displayName);
     }
 
     public static QuestObjectiveDefinition biome(NamespacedKey biomeKey, int required, String displayName) {
-        return new QuestObjectiveDefinition(QuestType.BIOME, required, null, biomeKey, null, displayName);
+        return new QuestObjectiveDefinition(QuestType.BIOME, required, null, biomeKey, null, null, 0, 0, displayName);
     }
 
     public static QuestObjectiveDefinition kill(EntityType entityType, int required, String displayName) {
-        return new QuestObjectiveDefinition(QuestType.KILL_MOB, required, null, null, entityType, displayName);
+        return new QuestObjectiveDefinition(QuestType.KILL_MOB, required, null, null, entityType, null, 0, 0, displayName);
+    }
+
+    public static QuestObjectiveDefinition structure(NamespacedKey structureKey, int required, int searchRadius, int nearBlocks, String displayName) {
+        return new QuestObjectiveDefinition(QuestType.STRUCTURE, required, null, null, null, structureKey, searchRadius, nearBlocks, displayName);
     }
 }

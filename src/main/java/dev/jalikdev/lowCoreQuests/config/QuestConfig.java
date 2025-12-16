@@ -12,6 +12,7 @@ import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.generator.structure.Structure;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,8 +111,8 @@ public class QuestConfig {
             }
 
             if (type == QuestType.BIOME) {
-                String biome = target.get("biome") == null ? "PLAINS" : String.valueOf(target.get("biome"));
-                NamespacedKey key = NamespacedKey.minecraft(biome.toLowerCase(Locale.ROOT));
+                String biome = target.get("biome") == null ? "plains" : String.valueOf(target.get("biome"));
+                NamespacedKey key = keyFrom(biome);
                 if (Registry.BIOME.get(key) == null) continue;
                 out.add(QuestObjectiveDefinition.biome(key, amount, display));
                 continue;
@@ -123,10 +124,34 @@ public class QuestConfig {
                 try { entity = EntityType.valueOf(ent.toUpperCase(Locale.ROOT)); }
                 catch (Exception e) { continue; }
                 out.add(QuestObjectiveDefinition.kill(entity, amount, display));
+                continue;
+            }
+
+            if (type == QuestType.STRUCTURE) {
+                String s = target.get("structure") == null ? "village" : String.valueOf(target.get("structure"));
+
+                NamespacedKey key = keyFrom(s);
+                if (Registry.STRUCTURE.get(key) == null) continue;
+
+                int searchRadius = clamp(intVal(target.get("searchRadius"), 2), 1, 8);
+                int nearBlocks = clamp(intVal(target.get("nearBlocks"), 80), 16, 512);
+
+                out.add(QuestObjectiveDefinition.structure(key, amount, searchRadius, nearBlocks, display));
             }
         }
 
         return out;
+    }
+
+    private static NamespacedKey keyFrom(String s) {
+        if (s == null) return NamespacedKey.minecraft("village");
+        String v = s.trim().toLowerCase(Locale.ROOT);
+        if (v.contains(":")) return NamespacedKey.fromString(v);
+        return NamespacedKey.minecraft(v);
+    }
+
+    private static int clamp(int v, int min, int max) {
+        return Math.max(min, Math.min(max, v));
     }
 
     private static int intVal(Object o, int def) {
