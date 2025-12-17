@@ -52,6 +52,8 @@ public class LowCoreQuests extends JavaPlugin {
 
         for (var p : Bukkit.getOnlinePlayers()) service.load(p.getUniqueId());
 
+        getServer().getPluginManager().registerEvents(new dev.jalikdev.lowCoreQuests.listener.RewardCrateListener(), this);
+
         getLogger().info("LowCoreQuests enabled.");
     }
 }

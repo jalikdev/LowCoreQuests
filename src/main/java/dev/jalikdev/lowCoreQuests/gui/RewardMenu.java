@@ -14,84 +14,93 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RewardMenu {
+public final class RewardMenu {
 
-    public static final String TITLE = "Select Reward";
+    public static final String TITLE = "Choose Reward";
+    public static final NamespacedKey KEY_REWARD_INDEX = new NamespacedKey("lowcorequests", "reward_index");
+    public static final NamespacedKey KEY_QUEST_ID = new NamespacedKey("lowcorequests", "quest_id");
 
-    public static final NamespacedKey KEY_REWARD_INDEX = new NamespacedKey("lowcorequests", "lcq_reward_idx");
-    public static final NamespacedKey KEY_QUEST_ID = new NamespacedKey("lowcorequests", "lcq_reward_qid");
+    private RewardMenu() {}
 
-    public static Inventory build(QuestDefinition def) {
-        Inventory inv = Bukkit.createInventory(null, 27, Text.c("&a" + TITLE));
-        fill(inv);
+    public static Inventory build(QuestDefinition quest) {
+        int size = 27;
+        Inventory inv = Bukkit.createInventory(null, size, Text.c("&a" + TITLE));
 
-        List<Reward> opts = def.rewards().options();
-        int count = Math.min(opts.size(), 7);
-        int[] slots = slotsWithGap(count);
+        ItemStack glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta gm = glass.getItemMeta();
+        gm.setDisplayName(" ");
+        glass.setItemMeta(gm);
+        for (int i = 0; i < size; i++) inv.setItem(i, glass);
 
-        for (int i = 0; i < count; i++) {
-            Reward r = opts.get(i);
+        inv.setItem(13, item(Material.BOOK, quest.name(), loreQuest(quest)));
 
-            ItemStack it = icon(r);
+        List<Reward> rewards = quest.rewards().options();
+        int n = rewards.size();
+
+        List<Integer> slots = centeredSlots(n);
+
+        for (int i = 0; i < n; i++) {
+            Reward r = rewards.get(i);
+            int slot = slots.get(i);
+
+            ItemStack it = new ItemStack(Material.CHEST);
             ItemMeta meta = it.getItemMeta();
-
-            meta.setDisplayName(Text.c("&f" + r.display()));
-
-            List<String> lore = new ArrayList<>();
-            lore.add(Text.c("&7Pick exactly one"));
-            lore.add(" ");
-
-            if (r instanceof Reward.BundleReward br) {
-                lore.add(Text.c("&7Contains:"));
-                int shown = 0;
-                for (Reward inside : br.rewards()) {
-                    lore.add(Text.c("&f- &7" + inside.display()));
-                    shown++;
-                    if (shown >= 6) break;
-                }
-                if (br.rewards().size() > 6) lore.add(Text.c("&7..."));
-                lore.add(" ");
-            }
-
-            lore.add(Text.c("&aClick to claim"));
-            meta.setLore(lore);
-
+            meta.setDisplayName(Text.c("&fReward " + (i + 1)));
+            meta.setLore(List.of(Text.c("&7" + r.display()), Text.c("&aClick to get a Reward Crate")));
             meta.getPersistentDataContainer().set(KEY_REWARD_INDEX, PersistentDataType.INTEGER, i);
-            meta.getPersistentDataContainer().set(KEY_QUEST_ID, PersistentDataType.STRING, def.id());
+            meta.getPersistentDataContainer().set(KEY_QUEST_ID, PersistentDataType.STRING, quest.id());
             it.setItemMeta(meta);
 
-            inv.setItem(slots[i], it);
+            inv.setItem(slot, it);
         }
+
+        inv.setItem(26, closeItem());
 
         return inv;
     }
 
-    private static int[] slotsWithGap(int count) {
-        return switch (count) {
-            case 1 -> new int[]{13};
-            case 2 -> new int[]{12, 14};
-            case 3 -> new int[]{11, 13, 15};
-            case 4 -> new int[]{10, 12, 14, 16};
-            case 5 -> new int[]{10, 11, 13, 15, 16};
-            case 6 -> new int[]{10, 11, 12, 14, 15, 16};
-            default -> new int[]{10, 11, 12, 13, 14, 15, 16};
-        };
+    private static List<String> loreQuest(QuestDefinition quest) {
+        List<String> lore = new ArrayList<>();
+        lore.add(Text.c("&7Pick exactly one option."));
+        lore.add(Text.c("&7You will receive a Reward Crate."));
+        lore.add(Text.c("&7Crate can be opened anytime."));
+        return lore;
     }
 
-    private static ItemStack icon(Reward r) {
-        if (r instanceof Reward.XpReward) return new ItemStack(Material.EXPERIENCE_BOTTLE);
-        if (r instanceof Reward.ItemReward) return new ItemStack(Material.CHEST);
-        if (r instanceof Reward.CommandReward) return new ItemStack(Material.COMMAND_BLOCK);
-        if (r instanceof Reward.BundleReward) return new ItemStack(Material.BUNDLE);
-        return new ItemStack(Material.CHEST);
+    private static ItemStack closeItem() {
+        ItemStack it = new ItemStack(Material.BARRIER);
+        ItemMeta meta = it.getItemMeta();
+        meta.setDisplayName(Text.c("&cClose"));
+        it.setItemMeta(meta);
+        return it;
     }
 
-    private static void fill(Inventory inv) {
-        ItemStack glass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta m = glass.getItemMeta();
-        m.setDisplayName(" ");
-        glass.setItemMeta(m);
-        for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, glass);
+    private static ItemStack item(Material mat, String name, List<String> lore) {
+        ItemStack it = new ItemStack(mat);
+        ItemMeta meta = it.getItemMeta();
+        meta.setDisplayName(Text.c(name));
+        meta.setLore(lore);
+        it.setItemMeta(meta);
+        return it;
+    }
+
+    private static List<Integer> centeredSlots(int n) {
+        List<Integer> out = new ArrayList<>();
+        if (n <= 0) return out;
+
+        int rowStart = 9;
+        int rowEnd = 17;
+
+        List<Integer> row = new ArrayList<>();
+        for (int s = rowStart; s <= rowEnd; s++) row.add(s);
+
+        if (n >= 9) {
+            for (int i = 0; i < Math.min(9, n); i++) out.add(row.get(i));
+            return out;
+        }
+
+        int start = (9 - n) / 2;
+        for (int i = 0; i < n; i++) out.add(row.get(start + i));
+        return out;
     }
 }
-

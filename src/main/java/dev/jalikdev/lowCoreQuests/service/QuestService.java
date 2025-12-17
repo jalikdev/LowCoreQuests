@@ -12,6 +12,7 @@ import dev.jalikdev.lowCoreQuests.reward.Reward;
 import dev.jalikdev.lowCoreQuests.reward.RewardBundle;
 import dev.jalikdev.lowCoreQuests.reward.RewardMode;
 import dev.jalikdev.lowCoreQuests.util.InventoryUtil;
+import dev.jalikdev.lowCoreQuests.util.RewardCrate;
 import dev.jalikdev.lowCoreQuests.util.StructureUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,10 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class QuestService {
 
     private final LowCore core;
-
     private final QuestConfig questConfig;
     private final StoryConfig storyConfig;
-
     private final QuestRepository questRepo;
     private final StoryRepository storyRepo;
     private final StatsRepository statsRepo;
@@ -40,10 +39,9 @@ public class QuestService {
     private final Map<UUID, Map<Integer, Integer>> progress = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> completedStoryIndex = new ConcurrentHashMap<>();
     private final Map<UUID, StatsRepository.Stats> statsCache = new ConcurrentHashMap<>();
-
     private final Map<UUID, Long> lastStructureCheck = new ConcurrentHashMap<>();
-    private static final long STRUCTURE_CHECK_COOLDOWN_MS = 3000L;
 
+    private static final long STRUCTURE_CHECK_COOLDOWN_MS = 3000L;
     private static final double EXTREME_CHANCE = 0.03;
 
     private final Random random = new Random();
@@ -60,16 +58,12 @@ public class QuestService {
 
     public void load(UUID uuid) {
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> {
-            int completed = storyRepo.loadCompletedIndex(uuid);
-            completedStoryIndex.put(uuid, completed);
-
-            StatsRepository.Stats s = statsRepo.load(uuid);
-            statsCache.put(uuid, s);
+            completedStoryIndex.put(uuid, storyRepo.loadCompletedIndex(uuid));
+            statsCache.put(uuid, statsRepo.load(uuid));
 
             questRepo.loadActive(uuid).ifPresent(state -> {
                 active.put(uuid, state);
-                Map<Integer, Integer> p = questRepo.loadProgress(uuid, state.questId());
-                progress.put(uuid, new ConcurrentHashMap<>(p));
+                progress.put(uuid, new ConcurrentHashMap<>(questRepo.loadProgress(uuid, state.questId())));
             });
         });
     }
@@ -82,74 +76,58 @@ public class QuestService {
         return progress.getOrDefault(uuid, Map.of());
     }
 
-    public int getCompletedStoryIndex(UUID uuid) {
-        return completedStoryIndex.getOrDefault(uuid, 0);
-    }
-
     public StatsRepository.Stats getStats(UUID uuid) {
         return statsCache.getOrDefault(uuid, new StatsRepository.Stats(0, 0, 0));
     }
 
     public QuestDefinition getActiveQuestDefinition(UUID uuid) {
         PlayerQuestState st = active.get(uuid);
-        if (st == null) return null;
-        return getQuestById(st.questId());
+        return st == null ? null : getQuestById(st.questId());
     }
 
     public QuestDefinition getQuestById(String id) {
-        QuestDefinition s = storyConfig.isStoryQuest(id) ? findStoryById(id) : null;
-        if (s != null) return s;
+        if (storyConfig.isStoryQuest(id)) {
+            int idx = storyConfig.getStoryIndex(id);
+            if (idx > 0) return storyConfig.getNextByCompletedIndex(idx - 1);
+        }
         return questConfig.get(id);
     }
 
-    private QuestDefinition findStoryById(String id) {
-        int idx = storyConfig.getStoryIndex(id);
-        if (idx <= 0) return null;
-        return storyConfig.getNextByCompletedIndex(idx - 1);
-    }
-
     public QuestDefinition getNextStory(UUID uuid) {
-        return storyConfig.getNextByCompletedIndex(getCompletedStoryIndex(uuid));
+        return storyConfig.getNextByCompletedIndex(completedStoryIndex.getOrDefault(uuid, 0));
     }
 
     public QuestDefinition startNextStory(Player player) {
-        UUID uuid = player.getUniqueId();
-        if (active.containsKey(uuid)) return null;
-
-        QuestDefinition next = getNextStory(uuid);
+        if (active.containsKey(player.getUniqueId())) return null;
+        QuestDefinition next = getNextStory(player.getUniqueId());
         if (next == null) return null;
-
-        boolean ok = start(player, next.id());
-        return ok ? next : null;
+        return start(player, next.id()) ? next : null;
     }
 
     public QuestDefinition startRandom(Player player) {
         UUID uuid = player.getUniqueId();
         if (active.containsKey(uuid)) return null;
 
-        List<QuestDefinition> pool = new ArrayList<>(questConfig.enabledQuests());
-        if (pool.isEmpty()) return null;
+        List<QuestDefinition> all = new ArrayList<>(questConfig.enabledQuests());
+        if (all.isEmpty()) return null;
 
         List<QuestDefinition> extreme = new ArrayList<>();
         List<QuestDefinition> normal = new ArrayList<>();
 
-        for (QuestDefinition q : pool) {
+        for (QuestDefinition q : all) {
             if (q.difficulty() == Difficulty.EXTREME) extreme.add(q);
             else normal.add(q);
         }
 
         QuestDefinition chosen;
-
-        boolean rollExtreme = !extreme.isEmpty() && random.nextDouble() < EXTREME_CHANCE;
-        if (rollExtreme) {
+        if (!extreme.isEmpty() && random.nextDouble() < EXTREME_CHANCE) {
             chosen = extreme.get(random.nextInt(extreme.size()));
         } else {
-            List<QuestDefinition> base = normal.isEmpty() ? pool : normal;
+            List<QuestDefinition> base = normal.isEmpty() ? all : normal;
             chosen = base.get(random.nextInt(base.size()));
         }
 
-        boolean ok = start(player, chosen.id());
-        return ok ? chosen : null;
+        return start(player, chosen.id()) ? chosen : null;
     }
 
     public boolean start(Player player, String questId) {
@@ -159,8 +137,7 @@ public class QuestService {
         QuestDefinition def = getQuestById(questId);
         if (def == null || !def.enabled()) return false;
 
-        PlayerQuestState st = new PlayerQuestState(uuid, questId);
-        active.put(uuid, st);
+        active.put(uuid, new PlayerQuestState(uuid, questId));
         progress.put(uuid, new ConcurrentHashMap<>());
 
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> {
@@ -178,49 +155,43 @@ public class QuestService {
         if (st == null) return false;
 
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> {
-            questRepo.deleteProgress(uuid, st.questId());
             questRepo.deleteActive(uuid);
+            questRepo.deleteProgress(uuid, st.questId());
         });
 
         return true;
     }
 
-    public void handleKill(Player player, EntityType killed) {
-        UUID uuid = player.getUniqueId();
-        QuestDefinition def = getActiveQuestDefinition(uuid);
+    public void handleKill(Player player, EntityType type) {
+        QuestDefinition def = getActiveQuestDefinition(player.getUniqueId());
         if (def == null) return;
 
         for (int i = 0; i < def.objectives().size(); i++) {
-            QuestObjectiveDefinition obj = def.objectives().get(i);
-            if (obj.type() != QuestType.KILL_MOB) continue;
-            if (obj.entityType() == killed) addProgress(player, i, 1);
+            QuestObjectiveDefinition o = def.objectives().get(i);
+            if (o.type() == QuestType.KILL_MOB && o.entityType() == type) addProgress(player, i, 1);
         }
     }
 
-    public void handleBreak(Player player, org.bukkit.Material broken) {
-        UUID uuid = player.getUniqueId();
-        QuestDefinition def = getActiveQuestDefinition(uuid);
+    public void handleBreak(Player player, org.bukkit.Material mat) {
+        QuestDefinition def = getActiveQuestDefinition(player.getUniqueId());
         if (def == null) return;
 
         for (int i = 0; i < def.objectives().size(); i++) {
-            QuestObjectiveDefinition obj = def.objectives().get(i);
-            if (obj.type() != QuestType.BREAK) continue;
-            if (obj.material() == broken) addProgress(player, i, 1);
+            QuestObjectiveDefinition o = def.objectives().get(i);
+            if (o.type() == QuestType.BREAK && o.material() == mat) addProgress(player, i, 1);
         }
     }
 
     public void handleBiome(Player player, Biome biome) {
-        UUID uuid = player.getUniqueId();
-        QuestDefinition def = getActiveQuestDefinition(uuid);
+        QuestDefinition def = getActiveQuestDefinition(player.getUniqueId());
         if (def == null) return;
 
-        NamespacedKey current = Registry.BIOME.getKey(biome);
-        if (current == null) return;
+        NamespacedKey key = Registry.BIOME.getKey(biome);
+        if (key == null) return;
 
         for (int i = 0; i < def.objectives().size(); i++) {
-            QuestObjectiveDefinition obj = def.objectives().get(i);
-            if (obj.type() != QuestType.BIOME) continue;
-            if (obj.biomeKey().equals(current)) setProgress(player, i, 1);
+            QuestObjectiveDefinition o = def.objectives().get(i);
+            if (o.type() == QuestType.BIOME && key.equals(o.biomeKey())) setProgress(player, i, 1);
         }
     }
 
@@ -228,9 +199,6 @@ public class QuestService {
         UUID uuid = player.getUniqueId();
         QuestDefinition def = getActiveQuestDefinition(uuid);
         if (def == null) return;
-
-        boolean hasStructure = def.objectives().stream().anyMatch(o -> o.type() == QuestType.STRUCTURE);
-        if (!hasStructure) return;
 
         long now = System.currentTimeMillis();
         long last = lastStructureCheck.getOrDefault(uuid, 0L);
@@ -240,39 +208,33 @@ public class QuestService {
         Location loc = player.getLocation();
 
         for (int i = 0; i < def.objectives().size(); i++) {
-            QuestObjectiveDefinition obj = def.objectives().get(i);
-            if (obj.type() != QuestType.STRUCTURE) continue;
+            QuestObjectiveDefinition o = def.objectives().get(i);
+            if (o.type() != QuestType.STRUCTURE) continue;
+            if (getProgress(uuid, i) >= o.required()) continue;
 
-            int cur = getProgress(uuid, i);
-            if (cur >= obj.required()) continue;
-
-            NamespacedKey key = obj.structureKey();
-            if (key == null) continue;
-
-            Structure structure = Registry.STRUCTURE.get(key);
+            Structure structure = Registry.STRUCTURE.get(o.structureKey());
             if (structure == null) continue;
 
-            Object result = loc.getWorld().locateNearestStructure(loc, structure, Math.max(1, obj.searchRadius()), false);
+            Object result = loc.getWorld().locateNearestStructure(loc, structure, o.searchRadius(), false);
             Location found = StructureUtil.extractLocation(result, loc.getWorld());
             if (found == null) continue;
 
-            int near = Math.max(16, obj.nearBlocks());
-            if (found.distanceSquared(loc) <= (double) near * (double) near) {
-                setProgress(player, i, obj.required());
+            int near = Math.max(16, o.nearBlocks());
+            if (found.distanceSquared(loc) <= (double) near * near) {
+                setProgress(player, i, o.required());
             }
         }
     }
 
     public void syncCollectProgress(Player player) {
-        UUID uuid = player.getUniqueId();
-        QuestDefinition def = getActiveQuestDefinition(uuid);
+        QuestDefinition def = getActiveQuestDefinition(player.getUniqueId());
         if (def == null) return;
 
         for (int i = 0; i < def.objectives().size(); i++) {
-            QuestObjectiveDefinition obj = def.objectives().get(i);
-            if (obj.type() != QuestType.COLLECT) continue;
-            int count = InventoryUtil.count(player, obj.material());
-            setProgress(player, i, count);
+            QuestObjectiveDefinition o = def.objectives().get(i);
+            if (o.type() == QuestType.COLLECT) {
+                setProgress(player, i, InventoryUtil.count(player, o.material()));
+            }
         }
     }
 
@@ -281,35 +243,31 @@ public class QuestService {
         QuestDefinition def = getActiveQuestDefinition(uuid);
         if (def == null) return 0;
 
-        int totalAdded = 0;
-
+        int total = 0;
         for (int i = 0; i < def.objectives().size(); i++) {
-            QuestObjectiveDefinition obj = def.objectives().get(i);
-            if (obj.type() != QuestType.DELIVER) continue;
+            QuestObjectiveDefinition o = def.objectives().get(i);
+            if (o.type() != QuestType.DELIVER) continue;
 
             int cur = getProgress(uuid, i);
-            int remaining = Math.max(0, obj.required() - cur);
-            if (remaining <= 0) continue;
+            int need = Math.max(0, o.required() - cur);
+            if (need <= 0) continue;
 
-            int removed = InventoryUtil.remove(player, obj.material(), remaining);
+            int removed = InventoryUtil.remove(player, o.material(), need);
             if (removed > 0) {
                 addProgress(player, i, removed);
-                totalAdded += removed;
+                total += removed;
             }
         }
-
-        return totalAdded;
+        return total;
     }
 
     public boolean canComplete(Player player) {
-        UUID uuid = player.getUniqueId();
-        QuestDefinition def = getActiveQuestDefinition(uuid);
+        QuestDefinition def = getActiveQuestDefinition(player.getUniqueId());
         if (def == null) return false;
 
-        Map<Integer, Integer> p = getProgressMap(uuid);
+        Map<Integer, Integer> p = getProgressMap(player.getUniqueId());
         for (int i = 0; i < def.objectives().size(); i++) {
-            int cur = p.getOrDefault(i, 0);
-            if (cur < def.objectives().get(i).required()) return false;
+            if (p.getOrDefault(i, 0) < def.objectives().get(i).required()) return false;
         }
         return true;
     }
@@ -320,55 +278,32 @@ public class QuestService {
         if (st == null) return;
 
         syncCollectProgress(player);
-
-        QuestDefinition def = getQuestById(st.questId());
-        if (def == null) return;
         if (!canComplete(player)) return;
 
+        QuestDefinition def = getQuestById(st.questId());
         RewardBundle bundle = def.rewards();
         List<Reward> options = bundle.options();
-
-        if (options == null || options.isEmpty()) {
-            finishAndMaybeAdvanceStory(uuid, st.questId());
-            player.sendMessage(core.getPrefix() + "Quest completed.");
-            return;
-        }
 
         if (bundle.mode() == RewardMode.CHOICE && options.size() > 1) {
             player.openInventory(RewardMenu.build(def));
             return;
         }
 
+        List<Reward> give;
         if (bundle.mode() == RewardMode.RANDOM) {
-            Reward r = options.get(random.nextInt(options.size()));
-            r.give(player);
-            finishAndMaybeAdvanceStory(uuid, st.questId());
-            player.sendMessage(core.getPrefix() + "Quest completed. Reward: " + r.display());
-            return;
+            give = List.of(options.get(random.nextInt(options.size())));
+        } else {
+            give = options;
         }
 
-        for (Reward r : options) r.give(player);
-        finishAndMaybeAdvanceStory(uuid, st.questId());
-        player.sendMessage(core.getPrefix() + "Quest completed.");
+        RewardCrate.giveCrateOrDrop(player, RewardCrate.create("&aReward Crate", give));
+        finish(uuid, st.questId());
     }
 
     public void claimChoice(Player player, String questId, int index) {
-        UUID uuid = player.getUniqueId();
-        PlayerQuestState st = active.get(uuid);
-        if (st == null || !st.questId().equals(questId)) return;
-
-        syncCollectProgress(player);
-
-        QuestDefinition def = getQuestById(questId);
-        if (def == null) return;
-        if (!canComplete(player)) return;
-
-        List<Reward> options = def.rewards().options();
-        if (index < 0 || index >= options.size()) return;
-
-        options.get(index).give(player);
-        finishAndMaybeAdvanceStory(uuid, questId);
-        player.sendMessage(core.getPrefix() + "Quest completed.");
+        Reward chosen = getQuestById(questId).rewards().options().get(index);
+        RewardCrate.giveCrateOrDrop(player, RewardCrate.create("&aReward Crate", List.of(chosen)));
+        finish(player.getUniqueId(), questId);
     }
 
     private int getProgress(UUID uuid, int idx) {
@@ -376,33 +311,22 @@ public class QuestService {
     }
 
     private void addProgress(Player player, int idx, int add) {
-        UUID uuid = player.getUniqueId();
-        QuestDefinition def = getActiveQuestDefinition(uuid);
-        if (def == null) return;
-        if (idx < 0 || idx >= def.objectives().size()) return;
-
-        int cur = getProgress(uuid, idx);
-        setProgress(player, idx, cur + Math.max(0, add));
+        setProgress(player, idx, getProgress(player.getUniqueId(), idx) + add);
     }
 
     private void setProgress(Player player, int idx, int value) {
         UUID uuid = player.getUniqueId();
-        PlayerQuestState st = active.get(uuid);
-        if (st == null) return;
-
-        QuestDefinition def = getQuestById(st.questId());
+        QuestDefinition def = getActiveQuestDefinition(uuid);
         if (def == null) return;
 
-        QuestObjectiveDefinition obj = def.objectives().get(idx);
-        int next = Math.min(obj.required(), Math.max(0, value));
-        int cur = getProgress(uuid, idx);
-        if (next == cur) return;
+        int capped = Math.min(def.objectives().get(idx).required(), Math.max(0, value));
+        progress.computeIfAbsent(uuid, k -> new ConcurrentHashMap<>()).put(idx, capped);
 
-        progress.computeIfAbsent(uuid, k -> new ConcurrentHashMap<>()).put(idx, next);
-        Bukkit.getScheduler().runTaskAsynchronously(core, () -> questRepo.upsertProgress(uuid, st.questId(), idx, next));
+        Bukkit.getScheduler().runTaskAsynchronously(core,
+                () -> questRepo.upsertProgress(uuid, def.id(), idx, capped));
     }
 
-    private void finishAndMaybeAdvanceStory(UUID uuid, String questId) {
+    private void finish(UUID uuid, String questId) {
         boolean isStory = storyConfig.isStoryQuest(questId);
         int storyIndex = storyConfig.getStoryIndex(questId);
 
@@ -410,27 +334,20 @@ public class QuestService {
         progress.remove(uuid);
 
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> {
-            questRepo.deleteProgress(uuid, questId);
             questRepo.deleteActive(uuid);
+            questRepo.deleteProgress(uuid, questId);
 
             statsRepo.increment(uuid, isStory);
-            StatsRepository.Stats cur = statsCache.getOrDefault(uuid, new StatsRepository.Stats(0, 0, 0));
-            StatsRepository.Stats next = new StatsRepository.Stats(
-                    cur.total() + 1,
-                    cur.story() + (isStory ? 1 : 0),
-                    cur.random() + (isStory ? 0 : 1)
-            );
-            statsCache.put(uuid, next);
+            StatsRepository.Stats s = statsCache.getOrDefault(uuid, new StatsRepository.Stats(0, 0, 0));
+            statsCache.put(uuid, new StatsRepository.Stats(
+                    s.total() + 1,
+                    s.story() + (isStory ? 1 : 0),
+                    s.random() + (isStory ? 0 : 1)
+            ));
 
             if (isStory && storyIndex > 0) {
-                int currentCompleted = storyRepo.loadCompletedIndex(uuid);
-                int expectedNext = currentCompleted + 1;
-
-                if (storyIndex == expectedNext) {
-                    int newCompleted = currentCompleted + 1;
-                    storyRepo.setCompletedIndex(uuid, newCompleted);
-                    completedStoryIndex.put(uuid, newCompleted);
-                }
+                storyRepo.setCompletedIndex(uuid, storyIndex);
+                completedStoryIndex.put(uuid, storyIndex);
             }
         });
     }
