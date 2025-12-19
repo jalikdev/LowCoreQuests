@@ -5,12 +5,10 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class XpReward implements Reward {
+public record XpReward(int amount) implements Reward {
 
-    private final int amount;
-
-    public XpReward(int amount) {
-        this.amount = Math.max(1, amount);
+    public XpReward {
+        amount = Math.max(1, amount);
     }
 
     @Override

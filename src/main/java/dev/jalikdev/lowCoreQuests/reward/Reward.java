@@ -17,22 +17,22 @@ public interface Reward {
         if (t == null) return null;
         String type = String.valueOf(t).toUpperCase(Locale.ROOT);
 
-        if (type.equals("COMMAND")) {
-            Object c = raw.get("command");
-            String cmd = c == null ? "" : String.valueOf(c);
-            if (cmd.isBlank()) return null;
-            return new CommandReward(cmd);
-        }
-
-        if (type.equals("XP")) {
-            Object a = raw.get("amount");
-            int amount = a instanceof Number n ? n.intValue() : parseInt(a, 0);
-            if (amount <= 0) return null;
-            return new XpReward(amount);
-        }
-
-        if (type.equals("ITEM")) {
-            return ItemReward.fromMap(raw);
+        switch (type) {
+            case "COMMAND" -> {
+                Object c = raw.get("command");
+                String cmd = c == null ? "" : String.valueOf(c);
+                if (cmd.isBlank()) return null;
+                return new CommandReward(cmd);
+            }
+            case "XP" -> {
+                Object a = raw.get("amount");
+                int amount = a instanceof Number n ? n.intValue() : parseInt(a, 0);
+                if (amount <= 0) return null;
+                return new XpReward(amount);
+            }
+            case "ITEM" -> {
+                return ItemReward.fromMap(raw);
+            }
         }
 
         return null;
