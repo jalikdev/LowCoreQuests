@@ -9,3 +9,8 @@ commands:
     description: Open quest menu
     usage: /quests
     aliases: [quest]
+
+permissions:
+  lowcore.quests:
+    description: Allows to use the /quests Admin menu
+    default: op

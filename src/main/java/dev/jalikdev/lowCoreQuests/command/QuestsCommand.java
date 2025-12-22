@@ -28,7 +28,17 @@ public class QuestsCommand implements CommandExecutor {
             return true;
         }
 
-        player.openInventory(QuestMenu.build(core, service, player));
-        return true;
+        if (args.length == 0) {
+            player.openInventory(QuestMenu.build(core, service, player));
+            return true;
+        }
+
+        if (args.equals("admin")) {
+            if (!player.hasPermission("lowcore.quests")) {
+                LowCore.sendConfigMessage(player, "no-permission");
+                return true;
+            }
+            player.openInventory(QuestMenuAdmin.build(core, service, player));
+        }
     }
 }
